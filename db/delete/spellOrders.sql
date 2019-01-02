@@ -1,0 +1,1 @@
+delete from GLspellOrders where spellId = $1

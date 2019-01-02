@@ -1,0 +1,1 @@
+delete from GLmiracleDomains where miracleId = $1

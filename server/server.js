@@ -33,6 +33,8 @@ app.use(cors())
 app.get('/magic', ctrl.getMagic);
 app.get('/divine', ctrl.getDivine);
 
+app.patch('/auth', ctrl.updateList)
+
 // ===============================
 
 massive(connection).then(dbI => {
