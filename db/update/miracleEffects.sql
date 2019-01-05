@@ -1,7 +1,13 @@
--- Update GLspellEffects 
--- set  
---     effect = $1, 
---     index = $2
--- Where spellId = $3;
+insert into GLmiracleeffects (effect, index, miracleid)
+select * from (select $1, $2, $3) as tmp
+where not EXISTS (
+    select * from GLmiracleeffects where miracleid = $3
+) limit 1;
 
-insert into GLmiracleEffects (effect, index, miracleId) values ($1, $2, $3)
+Update GLmiracleEffects 
+set  
+    effect = $1, 
+    index = $2
+Where miracleId = $3
+    and
+    exists (select * from GLmiracleeffects where miracleid = $3);

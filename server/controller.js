@@ -2,10 +2,11 @@ const { magic, divine } = require('./serv-config')
     , rp = require('request-promise')
 
 module.exports = {
+
+// UPDATE AND PURE GETS
     updateList: (req, res) => {
         const db = req.app.get('db')
         let promise = []
-
         let spellCut = '>SPELL DESCRIPTIONS<'
         let miracleCut = '>MIRACLE DESCRIPTIONS<'
 
@@ -31,14 +32,14 @@ module.exports = {
                 db.update.spells(descript[indexes[i]].replace(/<(?:.|\n)*?>/gm, ''), descript[indexes[i] + offset + 2].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, ''), descript[indexes[i] + offset + 4].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, ''), descript[indexes[i] + offset + 6].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, '').replace(/&rsquo;/g, "'"))
                     .then(id => {
                         effects.forEach((val, i) => {
-                            promise.push(db.update.spellEffects(val, i + 1, id[0].id).then())
+                            promise.push(db.update.spellEffects(val, i + 1, id[0].id).then().catch(e=> console.log(e)))
                         })
                         db.delete.spellOrders(id[0].id).then(_ => {
                             orders.forEach(val => {
-                                promise.push(db.add.spellOrder(id[0].id, val).then())
+                                promise.push(db.add.spellOrder(id[0].id, val).then().catch(e=> console.log(e)))
                             })
                         })
-                    })
+                    }).catch(e=> console.log(e))
             }
         })
 

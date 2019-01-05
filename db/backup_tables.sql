@@ -3,7 +3,7 @@ create table GLspells (
     name varchar(40),
     duration varchar(40),
     aoe varchar(40),
-    components varchar(40)
+    components varchar(100)
 );
 
 create table GLorders(
