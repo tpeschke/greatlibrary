@@ -32,6 +32,7 @@ app.use(cors())
 
 app.get('/magic', ctrl.getMagic);
 app.get('/divine', ctrl.getDivine);
+app.get('/single/:id', ctrl.getSingle);
 
 app.patch('/auth', ctrl.updateList)
 

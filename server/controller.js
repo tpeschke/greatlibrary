@@ -2,7 +2,24 @@ const { magic, divine } = require('./serv-config')
     , rp = require('request-promise')
 
 module.exports = {
+    getSingle: (req, res) => {
+        const db = req.app.get('db')
+        let { id } = req.params
 
+        if (id.substring(0,1) === 'm') {
+            db.get.miracle(id.substring(1)).then( result => {
+                db.get.miracleEffect(id.substring(1)).then( effects => {
+                    res.send(Object.assign(result[0], {effects}))
+                })
+            })
+        } else {
+            db.get.spell(id.substring(1)).then( result => {
+                db.get.spellEffect(id.substring(1)).then( effects => {
+                    res.send(Object.assign(result[0], {effects}))
+                })
+            })
+        }
+    },
 // UPDATE AND PURE GETS
     updateList: (req, res) => {
         const db = req.app.get('db')
@@ -31,12 +48,13 @@ module.exports = {
 
                 db.update.spells(descript[indexes[i]].replace(/<(?:.|\n)*?>/gm, ''), descript[indexes[i] + offset + 2].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, ''), descript[indexes[i] + offset + 4].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, ''), descript[indexes[i] + offset + 6].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, '').replace(/&rsquo;/g, "'"))
                     .then(id => {
+                        let spellid = id[0].id
                         effects.forEach((val, i) => {
-                            promise.push(db.update.spellEffects(val, i + 1, id[0].id).then().catch(e=> console.log(e)))
+                            promise.push(db.update.spellEffects(val, i + 1, spellid).then().catch(e=> console.log(e)))
                         })
                         db.delete.spellOrders(id[0].id).then(_ => {
                             orders.forEach(val => {
-                                promise.push(db.add.spellOrder(id[0].id, val).then().catch(e=> console.log(e)))
+                                promise.push(db.add.spellOrder(spellid, val).then().catch(e=> console.log(e)))
                             })
                         })
                     }).catch(e=> console.log(e))
@@ -68,8 +86,9 @@ module.exports = {
 
                 db.update.miracles(descript[indexes[i]].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, ''), offset === 0 ? 'none' : descript[indexes[i] + 3].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, ''))
                     .then(id => {
+                        let miracleid = id[0].id
                         effects.forEach((val, i) => {
-                            promise.push(db.update.miracleEffects(val, i + 1, id[0].id).then())
+                            promise.push(db.update.miracleEffects(val, i + 1, miracleid).then())
                         })
                         db.delete.miracleDomains(id[0].id).then(_ => {
                             domains.forEach(val => {

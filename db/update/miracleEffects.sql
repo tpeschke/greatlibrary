@@ -1,13 +1,16 @@
 insert into GLmiracleeffects (effect, index, miracleid)
 select * from (select $1, $2, $3) as tmp
 where not EXISTS (
-    select * from GLmiracleeffects where miracleid = $3
+    select * from GLmiracleeffects where miracleid = $3 and index = $2
 ) limit 1;
 
 Update GLmiracleEffects 
 set  
     effect = $1, 
     index = $2
-Where miracleId = $3
-    and
+Where 
+    miracleId = $3
+        and
+    index = $2
+        and
     exists (select * from GLmiracleeffects where miracleid = $3);
