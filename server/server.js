@@ -44,8 +44,17 @@ app.get('/divine', ctrl.getDivine);
 app.get('/single/:id', ctrl.getSingle);
 app.get('/byDomain/:domain', ctrl.getDomain);
 app.get('/byOrder/:order', ctrl.getOrder);
+// app.get('/getAllLists', ctrl.allLists);
+// app.get('/getList', ctrl.getList);
+
+// app.post('/newList', ctrl.newList);
 
 app.patch('/auth', ctrl.updateList);
+// app.patch('/addSpell', ctrl.addSpell);
+// app.patch('/updateList', ctrl.updateList); // updates list name / description
+
+// app.delete('/deleteList', ctrl.deleteList);
+// app.delete('/deleteSpell', ctrl.deleteSpell);
 
 // ===============================
 

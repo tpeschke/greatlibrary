@@ -40,9 +40,15 @@ module.exports = {
         const db = req.app.get('db')
         let { order } = req.params
 
-        db.get.byOrder(order.toUpperCase()).then( list => {
-            res.send(list)
-        })
+        if (order.toUpperCase === "ELEMENTAL") {
+            db.get.elemental(order.toUpperCase()).then( list => {
+                res.send(list)
+            })
+        } else {
+            db.get.byOrder(order.toUpperCase()).then( list => {
+                res.send(list)
+            })
+        }
     },
 
 // UPDATE AND PURE GETS
