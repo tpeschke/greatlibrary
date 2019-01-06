@@ -8,19 +8,46 @@ module.exports = {
 
         if (id.substring(0,1) === 'm') {
             db.get.miracle(id.substring(1)).then( result => {
-                db.get.miracleEffect(id.substring(1)).then( effects => {
-                    res.send(Object.assign(result[0], {effects}))
+                db.get.miracleEffect(id.substring(1)).then( eff => {
+                    let effects = []
+                    let domains = []
+                    db.get.domains(id.substring(1)).then( dom => {
+                        dom.forEach(val => domains.push(val.name))
+                        eff.forEach(val => effects.push(val.effect))
+                        res.send(Object.assign(result[0], {effects}, {domains}))
+                    })
                 })
             })
         } else {
             db.get.spell(id.substring(1)).then( result => {
-                db.get.spellEffect(id.substring(1)).then( effects => {
+                db.get.spellEffect(id.substring(1)).then( eff => {
+                    let effects = []
+                    eff.forEach(val => effects.push(val.effect))
                     res.send(Object.assign(result[0], {effects}))
                 })
             })
         }
     },
+    getDomain: (req, res) => {
+        const db = req.app.get('db')
+        let { domain } = req.params
+
+        db.get.byDomain(domain.toUpperCase()).then( list => {
+            res.send(list)
+        })
+    },
+    getOrder: (req, res) => {
+        const db = req.app.get('db')
+        let { order } = req.params
+
+        db.get.byOrder(order.toUpperCase()).then( list => {
+            res.send(list)
+        })
+    },
+
 // UPDATE AND PURE GETS
+
+
     updateList: (req, res) => {
         const db = req.app.get('db')
         let promise = []
@@ -90,9 +117,12 @@ module.exports = {
                         effects.forEach((val, i) => {
                             promise.push(db.update.miracleEffects(val, i + 1, miracleid).then())
                         })
+                        domains.forEach((val) => {
+                            promise.push(db.update.miracleDomains(miracleid, val.toUpperCase()).then())
+                        })
                         db.delete.miracleDomains(id[0].id).then(_ => {
                             domains.forEach(val => {
-                                promise.push(db.add.miracleDomains(id[0].id, val).then())
+                                promise.push(db.add.miracleDomains(miracleid, val).then())
                             })
                         })
                     })

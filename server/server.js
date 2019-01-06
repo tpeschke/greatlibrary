@@ -21,7 +21,7 @@ app.use(passport.session());
 
 ///////////////////////////////////
 ////TESTING TOPLEVEL MIDDLEWARE////
-///COMMENET OUT WHEN AUTH0 READY///
+///COMMENT OUT WHEN AUTH0 READY///
 ///////////////////////////////////
 app.use((req, res, next) =>{
     if(!req.session.user){
@@ -42,8 +42,10 @@ app.use((req, res, next) =>{
 app.get('/magic', ctrl.getMagic);
 app.get('/divine', ctrl.getDivine);
 app.get('/single/:id', ctrl.getSingle);
+app.get('/byDomain/:domain', ctrl.getDomain);
+app.get('/byOrder/:order', ctrl.getOrder);
 
-app.patch('/auth', ctrl.updateList)
+app.patch('/auth', ctrl.updateList);
 
 // ===============================
 
