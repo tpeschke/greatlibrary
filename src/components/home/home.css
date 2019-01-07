@@ -43,6 +43,31 @@
     margin-bottom: 15px;
 }
 
+.listBox:last-child {
+    margin-bottom: 0;
+}
+
 .listInner {
-    overflow-y: scroll
+    overflow-y: scroll;
+    margin-bottom: 5px;
+}
+
+.orderBox {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.orderEach:hover {
+    background-color: olive;
+}
+
+.orderEach {
+    background: lightgrey;
+    padding: 5px 7px;
+    margin: 1px;
+}
+
+.all {
+    width: 100px;
+    text-align: center;
 }

@@ -33,14 +33,17 @@ export default class Home extends Component {
         return (
             <div className="outerShell">
                 <div className="box">
+                    <h1>My List</h1>
                     {leftDiv}
                 </div>
                 <div className="box">
                     <div className="innerBox">
-                        <SpellList />
+                        <SpellList 
+                            redirect={this.props.history.push}/>
                     </div>
                     <div className="innerBox">
-                        <MiracleList />
+                        <MiracleList 
+                            redirect={this.props.history.push}/>
                     </div>
                 </div>
             </div>

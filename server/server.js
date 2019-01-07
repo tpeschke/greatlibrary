@@ -67,6 +67,8 @@ app.get('/login', (req, res) => {
 
 app.get('/magic', ctrl.getMagic);
 app.get('/divine', ctrl.getDivine);
+app.get('/orders', ctrl.getOrders);
+app.get('/domains', ctrl.getDomains);
 app.get('/single/:id', ctrl.getSingle);
 app.get('/byDomain/:domain', ctrl.getDomain);
 app.get('/byOrder/:order', ctrl.getOrder);
