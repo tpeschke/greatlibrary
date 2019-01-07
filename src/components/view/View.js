@@ -4,6 +4,7 @@ import './view.css'
 
 import Sidebar from './Sidebar'
 import MainView from './MainView'
+import ListSelection from './ListSelection'
 
 export default class View extends Component {
     constructor() {
@@ -14,7 +15,10 @@ export default class View extends Component {
             param: '',
             data: [],
             name: '',
-            descrip: null
+            descrip: null,
+            lists: [],
+            active: null,
+            open: false
         }
     }
 
@@ -33,9 +37,15 @@ export default class View extends Component {
             axios.get('/orders').then(res => {
                 this.setState({data: res.data, name: params[1]})
             })
+            axios.get('/getAllLists').then(res => {
+                this.setState({lists: res.data})
+            })
         } else {
             axios.get('/domains').then(res => {
                 this.setState({data: res.data, name: params[1]})
+            })
+            axios.get('/getAllLists').then(res => {
+                this.setState({lists: res.data})
             })
         }
     }
@@ -64,8 +74,28 @@ export default class View extends Component {
         }
     }
 
+    setActive = (id) => {
+        if (id === this.state.active) {
+            this.setState({active: null})
+        } else {
+            this.setState({active: id})
+        }
+    }
+
+    openModel = (e) => {
+        e.stopPropagation()
+        this.setState({open: !this.state.open})
+    }
+
+    addSpell = (e, id) => {
+        let {active} = this.state
+        axios.post('/addSpell', {spellid: active, listid: id}).then( _ => {
+            this.openModel(e)
+        })
+    }
+
     render() {
-        let {param, data, name, descrip, type} = this.state
+        let {param, data, name, descrip, type, lists, active, open} = this.state
         
         return (
             <div className="viewShell">
@@ -80,8 +110,17 @@ export default class View extends Component {
                         name={name}
                         descrip={descrip}
                         type={type}
-                        param={param}/>
+                        param={param}
+                        setActive={this.setActive}
+                        active={active}
+                        openModel={this.openModel}/>
                 </div>
+
+                <ListSelection 
+                    lists={lists}
+                    open={open}
+                    openModel={this.openModel}
+                    addSpell={this.addSpell}/>
             </div>
         )
     }

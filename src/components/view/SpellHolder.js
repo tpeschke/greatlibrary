@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function SpellHolder({ name, duration, aoe, components, effects, req, id, active, setActive, type }) {
+export default function SpellHolder({ name, duration, aoe, components, effects, req, id, active, setActive, type, openModel }) {
 
     let eff = effects.map(val => {
         return (
@@ -32,7 +32,7 @@ export default function SpellHolder({ name, duration, aoe, components, effects, 
                 {eff}
 
                 <div className="holdButton">
-                    <button className={type !== "list" ? "" : "hidden"}>Add To A List</button>
+                    <button className={type !== "list" ? "" : "hidden"} onClick={openModel}>Add To A List</button>
                     <button className={type === "list" ? "" : "hidden"}>Remove from List</button>
                 </div>
             </div>

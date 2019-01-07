@@ -8,8 +8,7 @@ export default class MainView extends Component {
         super()
 
         this.state = {
-            spells: [],
-            active: null
+            spells: []
         }
     }
 
@@ -27,16 +26,8 @@ export default class MainView extends Component {
         })
     }
 
-    setActive = (id) => {
-        if (id === this.state.active) {
-            this.setState({active: null})
-        } else {
-            this.setState({active: id})
-        }
-    }
-
     render() {
-        let {name, descrip} = this.props
+        let {name, descrip, setActive, active, openModel} = this.props
 
         let format = this.state.spells.map(val => {
             let {name, duration, aoe, components, effects, req, id} = val
@@ -44,8 +35,8 @@ export default class MainView extends Component {
                 <SpellHolder key={id} 
                     name={name} id={id} duration={duration} aoe={aoe} 
                     components={components} effects={effects} req={req}
-                    setActive={this.setActive} active={this.state.active}
-                    type={this.props.type}/>
+                    setActive={setActive} active={active}
+                    type={this.props.type} openModel={openModel}/>
             )
         })
 

@@ -67,3 +67,35 @@
 .holdButton {
     margin-top: 15px;
 }
+
+.selectionModal {
+    position: fixed;
+    background: lightgreen;
+    height: 50%;
+    width: 30%;
+    top: 10%;
+    left: 35%;
+    padding: 25px;
+}
+
+.selectTray {
+    overflow-y: auto;
+}
+
+.selectItem {
+    background: whitesmoke;
+    padding: 10px;
+}
+
+.selectItem:hover {
+    background: orange
+}
+
+.overlay {
+    background: rgba(0, 0, 0, 0.226);
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
