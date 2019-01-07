@@ -1,17 +1,18 @@
 import React from 'react'
 
-export default function SpellHolder({ name, duration, aoe, components, effects, req, id, active, setActive, type, openModel }) {
+export default function SpellHolder({ name, duration, aoe, components, effects, req, id, active, setActive, type, openModel, deleteSpell }) {
 
-    let eff = effects.map(val => {
+    let eff = effects.map((val, i) => {
         return (
-            <div className="holdIndividual">
+            <div className="holdIndividual" key={i}>
                 <p>{val}</p>
             </div>
         )
     })
+
     return (
-        <div className="holdOuter">
-            <div className="holdHeader" onClick={_=>setActive(id)}>
+        <div className="holdOuter" onClick={e=>setActive(id, e)}>
+            <div className="holdHeader" onClick={e=>setActive(id, e)}>
                 {name}
             </div>
             <div className="holddetails">
@@ -33,7 +34,7 @@ export default function SpellHolder({ name, duration, aoe, components, effects, 
 
                 <div className="holdButton">
                     <button className={type !== "list" ? "" : "hidden"} onClick={openModel}>Add To A List</button>
-                    <button className={type === "list" ? "" : "hidden"}>Remove from List</button>
+                    <button className={type === "list" ? "" : "hidden"} onClick={deleteSpell}>Remove from List</button>
                 </div>
             </div>
         </div>

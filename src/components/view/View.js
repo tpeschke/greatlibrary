@@ -14,6 +14,7 @@ export default class View extends Component {
             type: '',
             param: '',
             data: [],
+            listid: '',
             name: '',
             descrip: null,
             lists: [],
@@ -28,7 +29,7 @@ export default class View extends Component {
 
         if (params[0] === 'list') {
             axios.get('/getSingleList/'+ params[1]).then( res => {
-                this.setState({name: res.data.name, descrip: res.data.description})
+                this.setState({name: res.data.name, descrip: res.data.description, listid: res.data.id})
             })
             axios.get('/getAllLists').then(res => {
                 this.setState({data: res.data})
@@ -74,7 +75,8 @@ export default class View extends Component {
         }
     }
 
-    setActive = (id) => {
+    setActive = (id, e) => {
+        e.stopPropagation()
         if (id === this.state.active) {
             this.setState({active: null})
         } else {
@@ -95,8 +97,8 @@ export default class View extends Component {
     }
 
     render() {
-        let {param, data, name, descrip, type, lists, active, open} = this.state
-        
+        let {param, data, name, descrip, type, lists, active, open, listid} = this.state
+
         return (
             <div className="viewShell">
                 <div className="viewBox viewBoxSidebar">
@@ -113,7 +115,10 @@ export default class View extends Component {
                         param={param}
                         setActive={this.setActive}
                         active={active}
-                        openModel={this.openModel}/>
+                        openModel={this.openModel}
+                        deleteSpell={this.deleteSpell}
+                        listid={listid}
+                        redirect={this.props.history.push}/>
                 </div>
 
                 <ListSelection 

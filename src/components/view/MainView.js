@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import _ from 'lodash'
 
 import SpellHolder from './SpellHolder'
 
@@ -26,16 +27,31 @@ export default class MainView extends Component {
         })
     }
 
+    deleteSpell = () => {
+        let {listid, active} = this.props
+        axios.delete(`/deleteSpell?spellid=${active}&listid=${listid}`).then(res =>{
+            let newSpells = _.cloneDeep(this.state.spells).filter(v => v.id !== active)
+            this.setState({spells: newSpells})
+        })
+    }
+
+    deleteList = () => {
+        let {listid, redirect} = this.props
+        axios.delete(`/deleteList/${listid}`).then(res =>{
+            redirect('/')
+        })
+    }
+
     render() {
-        let {name, descrip, setActive, active, openModel} = this.props
+        let {name, descrip, setActive, active, openModel, listid} = this.props
 
         let format = this.state.spells.map(val => {
             let {name, duration, aoe, components, effects, req, id} = val
             return (
                 <SpellHolder key={id} 
-                    name={name} id={id} duration={duration} aoe={aoe} 
+                    name={name} id={id} duration={duration} aoe={aoe} listid={listid}
                     components={components} effects={effects} req={req}
-                    setActive={setActive} active={active}
+                    setActive={setActive} active={active} deleteSpell={this.deleteSpell}
                     type={this.props.type} openModel={openModel}/>
             )
         })
@@ -49,6 +65,8 @@ export default class MainView extends Component {
                 <div className="spellHolder">
                     {format}
                 </div>
+
+                <button onClick={this.deleteList}>Delete List</button>
             </div>
         )
     }
