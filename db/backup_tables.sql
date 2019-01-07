@@ -48,4 +48,19 @@ create table GLmiracleEffects (
     miracleId int,
     index int,
     effect text
+);
+
+-- =============================================================== --
+
+create table GLspellList (
+    id serial primary key,
+    userid int,
+    name varchar(40),
+    description varchar(250)
+);
+
+create table GLlist (
+    id serial primary key,
+    listId int,
+    spellId int
 )

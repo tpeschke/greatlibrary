@@ -19,6 +19,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+new CronJob('0 0 0 * * *', _ => {
+    const a = app.get('db')
+    ctrl.updateList({body: {auth, a}}, null)
+}, null, true, 'America/Los_Angeles')
+
 ///////////////////////////////////
 ////TESTING TOPLEVEL MIDDLEWARE////
 ///COMMENT OUT WHEN AUTH0 READY///
@@ -26,7 +31,7 @@ app.use(passport.session());
 app.use((req, res, next) =>{
     if(!req.session.user){
         req.session.user = {
-            user_id: 1,
+            id: 1,
             user_name: "harrison ford", 
             email: "adventureBuilder2049@gmail.com", 
             name: "adventure", 
@@ -44,17 +49,17 @@ app.get('/divine', ctrl.getDivine);
 app.get('/single/:id', ctrl.getSingle);
 app.get('/byDomain/:domain', ctrl.getDomain);
 app.get('/byOrder/:order', ctrl.getOrder);
-// app.get('/getAllLists', ctrl.allLists);
-// app.get('/getList', ctrl.getList);
+app.get('/getAllLists', ctrl.allLists);
+app.get('/getList/:id', ctrl.getList);
 
-// app.post('/newList', ctrl.newList);
+app.post('/newList', ctrl.newList);
+app.post('/addSpell', ctrl.addSpell);
 
-app.patch('/auth', ctrl.updateList);
-// app.patch('/addSpell', ctrl.addSpell);
-// app.patch('/updateList', ctrl.updateList); // updates list name / description
+app.patch('/updateAll', ctrl.updateList);
+app.patch('/updateListInfo', ctrl.updateListInfo); // updates list name / description
 
-// app.delete('/deleteList', ctrl.deleteList);
-// app.delete('/deleteSpell', ctrl.deleteSpell);
+app.delete('/deleteList/:id', ctrl.deleteList);
+app.delete('/deleteSpell', ctrl.deleteSpell);
 
 // ===============================
 

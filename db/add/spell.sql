@@ -1,0 +1,1 @@
+insert into GLlist (spellid, listid) values ($1, $2)

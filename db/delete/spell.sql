@@ -1,0 +1,1 @@
+delete from GLlist where spellid = $1 and listid = $2
