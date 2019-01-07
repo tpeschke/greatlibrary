@@ -1,1 +1,2 @@
-insert into GLspellList (userid, name, description) values ($1, $2, $3)
+insert into GLspellList (userid, name, description) values ($1, 'New List', '')
+Returning id;

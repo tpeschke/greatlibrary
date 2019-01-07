@@ -28,7 +28,7 @@ export default class Home extends Component {
     }
 
     render() {
-        let leftDiv = this.state.loggedIn ? <MyList /> : <Login logIn={this.logIn} />
+        let leftDiv = this.state.loggedIn ? <MyList redirect={this.props.history.push} /> : <Login logIn={this.logIn} />
 
         return (
             <div className="outerShell">

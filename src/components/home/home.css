@@ -20,3 +20,29 @@
 .innerBox:nth-child(2) {
     margin-top: 50px;
 }
+
+.listShell {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.listTitle {
+    background: grey;
+    padding: 10px;
+    font-size: 20px;
+}
+
+.listDescrip {
+    padding: 15px 5px;
+}
+
+.listBox {
+    background-color: whitesmoke;
+    margin-bottom: 15px;
+}
+
+.listInner {
+    overflow-y: scroll
+}

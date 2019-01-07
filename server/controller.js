@@ -83,7 +83,7 @@ module.exports = {
         let { name, description } = req.body
         let { id } = req.session.user
 
-        db.add.list(id, name, description).then(_ => res.send('done'))
+        db.add.list(id, name, description).then(result => res.send(result))
     },
     addSpell: (req, res) => {
         const db = req.app.get('db')
