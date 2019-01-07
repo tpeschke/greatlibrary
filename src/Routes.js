@@ -13,7 +13,7 @@ export default class Routes extends Component {
                         exact path='/'
                         component={Home}/>
                     <Route 
-                        path='/view'
+                        path='/view/:type'
                         component={View}/>
                 </Switch>
             </div>

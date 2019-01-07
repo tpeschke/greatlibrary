@@ -21,25 +21,46 @@ app.use(passport.session());
 
 new CronJob('0 0 0 * * *', _ => {
     const a = app.get('db')
-    ctrl.updateList({body: {auth, a}}, null)
+    ctrl.updateList({ body: { auth, a } }, null)
 }, null, true, 'America/Los_Angeles')
 
 ///////////////////////////////////
 ////TESTING TOPLEVEL MIDDLEWARE////
 ///COMMENT OUT WHEN AUTH0 READY///
 ///////////////////////////////////
-app.use((req, res, next) =>{
-    if(!req.session.user){
+// app.use((req, res, next) =>{
+//     if(!req.session.user){
+//         req.session.user = {
+//             id: 1,
+//             user_name: "harrison ford", 
+//             email: "adventureBuilder2049@gmail.com", 
+//             name: "adventure", 
+//             profile_picture : "http://www.placekitten.com/200/250",
+//             auth_id: "adsgfhaoibjmoi5wrhgiuaosfngiuasdhg;ioarhdgv;ou"
+//         }
+//     }
+//     next();
+// })
+
+app.get('/checkLogin', (req, res) => {
+    if (req.session.user) {
+        res.send(true)
+    } else {
+        res.send(false)
+    }
+})
+app.get('/login', (req, res) => {
+    if (!req.session.user) {
         req.session.user = {
             id: 1,
-            user_name: "harrison ford", 
-            email: "adventureBuilder2049@gmail.com", 
-            name: "adventure", 
-            profile_picture : "http://www.placekitten.com/200/250",
+            user_name: "harrison ford",
+            email: "adventureBuilder2049@gmail.com",
+            name: "adventure",
+            profile_picture: "http://www.placekitten.com/200/250",
             auth_id: "adsgfhaoibjmoi5wrhgiuaosfngiuasdhg;ioarhdgv;ou"
         }
     }
-    next();
+    res.send(true)
 })
 
 // ===============================
@@ -65,7 +86,7 @@ app.delete('/deleteSpell', ctrl.deleteSpell);
 
 massive(connection).then(dbI => {
     app.set('db', dbI)
-    app.listen(server, _=> {
+    app.listen(server, _ => {
         console.log(`life is a song of sadness written in your own hand ${server}`)
     })
 })

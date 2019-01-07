@@ -1,0 +1,22 @@
+.outerShell {
+    display: flex;
+    flex-direction: row;
+    background-color: lightblue;
+}
+
+.box {
+    background-color: lightcoral;
+    width: 50%;
+    height: 500px;
+    margin: 25px;
+    padding: 25px;
+}
+
+.innerBox {
+    height: 200px;
+    background: whitesmoke;
+}
+
+.innerBox:nth-child(2) {
+    margin-top: 50px;
+}
