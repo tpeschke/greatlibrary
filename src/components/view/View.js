@@ -4,7 +4,6 @@ import './view.css'
 
 import Sidebar from './Sidebar'
 import MainView from './MainView'
-import SpellHolder from './SpellHolder'
 
 export default class View extends Component {
     constructor() {

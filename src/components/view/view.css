@@ -28,3 +28,42 @@
 .sidebarSelection:last-child {
     margin-bottom: 0;
 }
+
+.hidden {
+    display: none;
+}
+
+.spellHolder {
+    background: lightpink;
+    margin-top: 15px;
+}
+
+.holdOuter {
+    margin-top: 15px;
+    background: white;
+}
+
+.holdHeader {
+    background: grey;
+    padding: 15px;
+}
+
+.holddetails {
+    padding: 5px 15px;
+    background-color: #222;
+    color: whitesmoke;
+    display: flex;
+    justify-content: space-between;
+}
+
+.holdEffects {
+    padding: 10px 15px 15px 15px;
+}
+
+.holdIndividual {
+    padding-top: 5px;
+}
+
+.holdButton {
+    margin-top: 15px;
+}

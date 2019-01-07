@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 
+import SpellHolder from './SpellHolder'
+
 export default class MainView extends Component {
     constructor() {
         super()
 
         this.state = {
-            spells: []
+            spells: [],
+            active: null
         }
     }
 
@@ -24,14 +27,25 @@ export default class MainView extends Component {
         })
     }
 
+    setActive = (id) => {
+        if (id === this.state.active) {
+            this.setState({active: null})
+        } else {
+            this.setState({active: id})
+        }
+    }
+
     render() {
         let {name, descrip} = this.props
 
         let format = this.state.spells.map(val => {
+            let {name, duration, aoe, components, effects, req, id} = val
             return (
-                <div key={val.id}>
-                    {val.name}
-                </div>
+                <SpellHolder key={id} 
+                    name={name} id={id} duration={duration} aoe={aoe} 
+                    components={components} effects={effects} req={req}
+                    setActive={this.setActive} active={this.state.active}
+                    type={this.props.type}/>
             )
         })
 
@@ -41,7 +55,7 @@ export default class MainView extends Component {
                     {name}
                     {descrip}
                 </div>
-                <div>
+                <div className="spellHolder">
                     {format}
                 </div>
             </div>
