@@ -17,7 +17,7 @@ export default class MiracleList extends Component {
     }
 
     goToView = (domain) => {
-        this.props.redirect('/view/domain' + domain)
+        this.props.redirect('/view/domain+' + domain)
     }
 
     render() {

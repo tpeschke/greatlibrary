@@ -1,0 +1,30 @@
+.viewShell {
+    background: lightblue;
+    display: flex;
+    justify-content: space-between;
+}
+
+.viewBox {
+    background: lightcoral;
+    min-width: 80%;
+    padding: 15px;
+}
+
+.viewBoxSidebar {
+    min-width: 20%;
+    background: grey;
+}
+
+.sidebarSelection {
+    background: whitesmoke;
+    padding: 7px 5px 7px 20px;
+    margin-bottom: 5px;
+}
+
+.sidebarSelection:hover {
+    background: lightseagreen;
+}
+
+.sidebarSelection:last-child {
+    margin-bottom: 0;
+}

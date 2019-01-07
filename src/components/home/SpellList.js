@@ -17,7 +17,7 @@ export default class SpellList extends Component {
     }
 
     goToView = (order) => {
-        this.props.redirect('/view/order' + order)
+        this.props.redirect('/view/order+' + order)
     }
 
     render() {
@@ -34,7 +34,7 @@ export default class SpellList extends Component {
         return (
             <div>
                 SpellList
-                <p className="orderEach all" onClick={_=>this.goToView("val.name")}>View All</p>
+                <p className="orderEach all" onClick={_=>this.goToView("All")}>View All</p>
                 <div className="orderBox">
                     {orders}
                 </div>

@@ -1,4 +1,4 @@
-select distinct glmiracles.id as id, glmiracles.name as name from glmiracledomains
+select distinct glmiracles.id as id, glmiracles.name as name, req from glmiracledomains
 join gldomains on gldomains.id = glmiracledomains.domainid
 join glmiracles on glmiracles.id = glmiracledomains.miracleid
 where 

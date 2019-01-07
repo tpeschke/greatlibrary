@@ -17,12 +17,12 @@ export default class MyList extends Component {
     }
 
     getList = (id) => {
-        this.props.redirect('/view/list' + id)
+        this.props.redirect('/view/list+' + id)
     }
 
     newList = () => {
         axios.post('/newList').then( res => {
-            this.props.redirect('/view/list' + res.data[0].id)
+            this.props.redirect('/view/list+' + res.data[0].id)
         })
     }
 

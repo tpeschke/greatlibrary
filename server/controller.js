@@ -35,7 +35,15 @@ module.exports = {
         let { domain } = req.params
 
         db.get.byDomain(domain.toUpperCase()).then(list => {
-            res.send(list)
+            let finalList = list.map(val => {
+                let finalSpell = db.get.miracleEffect(val.id).then(eff => {
+                    let effects = []
+                    eff.forEach(v => effects.push(v.effect))
+                    return Object.assign(val, { effects })
+                })
+                return finalSpell
+            })
+            Promise.all(finalList).then(finalArray => res.send(finalArray))
         })
     },
     getOrder: (req, res) => {
@@ -44,11 +52,27 @@ module.exports = {
 
         if (order.toUpperCase === "ELEMENTAL") {
             db.get.elemental(order.toUpperCase()).then(list => {
-                res.send(list)
+                let finalList = list.map(val => {
+                    let finalSpell = db.get.spellEffect(val.id).then(eff => {
+                        let effects = []
+                        eff.forEach(v => effects.push(v.effect))
+                        return Object.assign(val, { effects })
+                    })
+                    return finalSpell
+                })
+                Promise.all(finalList).then(finalArray => res.send(finalArray))
             })
         } else {
             db.get.byOrder(order.toUpperCase()).then(list => {
-                res.send(list)
+                let finalList = list.map(val => {
+                    let finalSpell = db.get.spellEffect(val.id).then(eff => {
+                        let effects = []
+                        eff.forEach(v => effects.push(v.effect))
+                        return Object.assign(val, { effects })
+                    })
+                    return finalSpell
+                })
+                Promise.all(finalList).then(finalArray => res.send(finalArray))
             })
         }
     },
@@ -83,6 +107,12 @@ module.exports = {
         const db = req.app.get('db')
 
         db.gldomains.find().then( result => res.send(result))
+    },
+    getSingleList: (req, res) => {
+        const db = req.app.get('db')
+        let { id } = req.params
+
+        db.glspelllist.find(+id).then( result => res.send(result))
     },
 
     /// POST ///

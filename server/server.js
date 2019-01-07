@@ -28,19 +28,19 @@ new CronJob('0 0 0 * * *', _ => {
 ////TESTING TOPLEVEL MIDDLEWARE////
 ///COMMENT OUT WHEN AUTH0 READY///
 ///////////////////////////////////
-// app.use((req, res, next) =>{
-//     if(!req.session.user){
-//         req.session.user = {
-//             id: 1,
-//             user_name: "harrison ford", 
-//             email: "adventureBuilder2049@gmail.com", 
-//             name: "adventure", 
-//             profile_picture : "http://www.placekitten.com/200/250",
-//             auth_id: "adsgfhaoibjmoi5wrhgiuaosfngiuasdhg;ioarhdgv;ou"
-//         }
-//     }
-//     next();
-// })
+app.use((req, res, next) =>{
+    if(!req.session.user){
+        req.session.user = {
+            id: 1,
+            user_name: "harrison ford", 
+            email: "adventureBuilder2049@gmail.com", 
+            name: "adventure", 
+            profile_picture : "http://www.placekitten.com/200/250",
+            auth_id: "adsgfhaoibjmoi5wrhgiuaosfngiuasdhg;ioarhdgv;ou"
+        }
+    }
+    next();
+})
 
 app.get('/checkLogin', (req, res) => {
     if (req.session.user) {
@@ -72,8 +72,9 @@ app.get('/domains', ctrl.getDomains);
 app.get('/single/:id', ctrl.getSingle);
 app.get('/byDomain/:domain', ctrl.getDomain);
 app.get('/byOrder/:order', ctrl.getOrder);
+app.get('/byList/:id', ctrl.getList);
 app.get('/getAllLists', ctrl.allLists);
-app.get('/getList/:id', ctrl.getList);
+app.get('/getSingleList/:id', ctrl.getSingleList);
 
 app.post('/newList', ctrl.newList);
 app.post('/addSpell', ctrl.addSpell);
