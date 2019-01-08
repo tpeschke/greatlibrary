@@ -30,8 +30,8 @@ export default class MyList extends Component {
         let lists = this.state.lists.map(val => {
             return (
                 <div key={val.id} className="listBox" onClick={_=>this.getList(val.id)}>
-                    <h3 className="listTitle">{val.name}</h3>
-                    <p className="listDescrip">{val.description}</p>
+                    <h4 className="listTitle">{val.name}</h4>
+                    <p className={val.description ? "listDescrip" : 'listNoDescrip'}>{val.description}</p>
                 </div>
             )
         })
@@ -41,8 +41,9 @@ export default class MyList extends Component {
                 <div className="listInner">
                     {lists}
                 </div>
-
-                <button onClick={this.newList}>New List</button>
+                <div className="listButton">
+                    <button id="listButton" onClick={this.newList}>New List</button>
+                </div>
             </div>
         )
     }

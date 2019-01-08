@@ -15,7 +15,8 @@ h3 {
 
 .box {
     width: 50%;
-    height: 500px;
+    height: 100%;
+    min-height: 500px;
     margin: 25px;
     padding: 25px;
     background: rgba(255, 255, 255, 0.6);
@@ -27,7 +28,7 @@ h3 {
 }
 
 .innerBox:nth-child(2) {
-    margin-top: 29px;
+    margin-bottom: 25px;
 }
 
 .listShell {
@@ -39,15 +40,27 @@ h3 {
 
 .listTitle {
     padding: 10px;
-    font-size: 20px;
+    font-size: 17px;
+    background: #C9AE5D;
 }
 
 .listDescrip {
-    padding: 15px 5px;
+    padding: 10px;
+    background: whitesmoke;
+    font-size: 15px;
+}
+
+.listNoDescrip {
+    border-bottom: 15px solid whitesmoke;
 }
 
 .listBox {
     margin-bottom: 10px;
+    font-family: 'Spectral SC', serif;
+}
+
+.listBox:hover .listTitle {
+    background: #89CFF0;
 }
 
 .listBox:last-child {
@@ -56,7 +69,7 @@ h3 {
 
 .listInner {
     overflow-y: auto;
-    margin-bottom: 5px;
+    margin-bottom: 25px;
 }
 
 .orderBox {
@@ -81,4 +94,34 @@ h3 {
     width: 100px;
     text-align: center;
     background: rgb(175, 152, 81);
+}
+
+.miracleBox {
+    margin-bottom: 25px;
+}
+
+.loginBox {
+    height: 100%;
+    min-height: 400px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+button {
+    height: 35px;
+    width: 150px;
+    background: #C9AE5D;
+    border: none;
+    font-family: 'Spectral SC', serif;
+}
+
+button:hover {
+    background: #89CFF0;
+}
+
+.listButton {
+    display: flex;
+    justify-content: space-around;
+    padding: 7px 0;
 }

@@ -32,7 +32,7 @@ export default class MiracleList extends Component {
         })
 
         return (
-            <div>
+            <div className="miracleBox">
                 <h3>Miracle List</h3>
                 <div className="orderBox">
                 <p className="orderEach all" onClick={_=>this.goToView("All")}>View All</p>

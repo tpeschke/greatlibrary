@@ -33,7 +33,7 @@ export default class Home extends Component {
         return (
             <div className="outerShell">
                 <div className="box">
-                    <h1>My Lists</h1>
+                    <h3>My Lists</h3>
                     {leftDiv}
                 </div>
                 <div className="box">
