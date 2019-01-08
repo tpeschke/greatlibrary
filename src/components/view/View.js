@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import _ from "lodash"
 import axios from 'axios'
 import './view.css'
 
@@ -96,6 +97,16 @@ export default class View extends Component {
         })
     }
 
+    updateList = (id, name, descrip) => {
+        let newInfo = _.cloneDeep(this.state.data).map(val => {
+            if (val.id === id) {
+                return {id, name, descrip}
+            }
+             return val
+        })
+        this.setState({name, descrip, data: newInfo}, _ => this.forceUpdate())
+    }
+
     render() {
         let {param, data, name, descrip, type, lists, active, open, listid} = this.state
 
@@ -118,7 +129,8 @@ export default class View extends Component {
                         openModel={this.openModel}
                         deleteSpell={this.deleteSpell}
                         listid={listid}
-                        redirect={this.props.history.push}/>
+                        redirect={this.props.history.push}
+                        updateList={this.updateList}/>
                 </div>
 
                 <ListSelection 

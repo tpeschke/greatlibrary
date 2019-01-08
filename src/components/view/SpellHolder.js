@@ -29,7 +29,7 @@ export default function SpellHolder({ name, duration, aoe, components, effects, 
                     Req: {req}
                 </div>
             </div>
-            <div className={id == active ? "holdEffects" : "holdEffects hidden"}>
+            <div className={id === active ? "holdEffects" : "holdEffects hidden"}>
                 {eff}
 
                 <div className="holdButton">
