@@ -6,13 +6,16 @@ import Routes from './Routes'
 class App extends Component {
   render() {
     return (
-      <div>
-        <div>
-          <h1>Great Library</h1>
+      <div className="AppShell">
+        <div className="headerShell">
+          <div className="headerImage"></div>
           <h2>A Spell and Miracle reference app for the <a href="http://highadventuregames.net">Bonfire Roleplaying Game</a></h2>
         </div>
 
         <Routes />
+        <div className="imageShell">
+          <div className="image"></div>
+        </div>
       </div>
     );
   }

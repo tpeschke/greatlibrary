@@ -1,28 +1,23 @@
 .viewShell {
-    background: lightblue;
     display: flex;
     justify-content: space-between;
 }
 
 .viewBox {
-    background: lightcoral;
     min-width: 80%;
     padding: 15px;
 }
 
 .viewBoxSidebar {
     min-width: 20%;
-    background: grey;
 }
 
 .sidebarSelection {
-    background: whitesmoke;
     padding: 7px 5px 7px 20px;
     margin-bottom: 5px;
 }
 
 .sidebarSelection:hover {
-    background: lightseagreen;
 }
 
 .sidebarSelection:last-child {
@@ -34,17 +29,14 @@
 }
 
 .spellHolder {
-    background: lightpink;
     margin-top: 15px;
 }
 
 .holdOuter {
     margin-top: 15px;
-    background: white;
 }
 
 .holdHeader {
-    background: grey;
     padding: 15px;
 }
 
@@ -70,7 +62,6 @@
 
 .selectionModal {
     position: fixed;
-    background: lightgreen;
     height: 50%;
     width: 30%;
     top: 10%;
@@ -83,16 +74,13 @@
 }
 
 .selectItem {
-    background: whitesmoke;
     padding: 10px;
 }
 
 .selectItem:hover {
-    background: orange
 }
 
 .overlay {
-    background: rgba(0, 0, 0, 0.226);
     height: 100%;
     width: 100%;
     position: absolute;

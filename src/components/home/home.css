@@ -1,24 +1,33 @@
+@import url('https://fonts.googleapis.com/css?family=Spectral+SC:400,800');
+
+h3 {
+    font-family: 'Spectral SC', serif;
+    color: white;
+    border-bottom: 3px solid rgb(65, 32, 0);
+    padding-bottom: 5px;
+    font-size: 20px;
+}
+
 .outerShell {
     display: flex;
     flex-direction: row;
-    background-color: lightblue;
 }
 
 .box {
-    background-color: lightcoral;
     width: 50%;
     height: 500px;
     margin: 25px;
     padding: 25px;
+    background: rgba(255, 255, 255, 0.6);
 }
 
 .innerBox {
     height: 200px;
-    background: whitesmoke;
+    /* border: 3px solid rgb(65, 32, 0); */
 }
 
 .innerBox:nth-child(2) {
-    margin-top: 50px;
+    margin-top: 29px;
 }
 
 .listShell {
@@ -29,7 +38,6 @@
 }
 
 .listTitle {
-    background: grey;
     padding: 10px;
     font-size: 20px;
 }
@@ -39,7 +47,6 @@
 }
 
 .listBox {
-    background-color: whitesmoke;
     margin-bottom: 10px;
 }
 
@@ -48,26 +55,30 @@
 }
 
 .listInner {
-    overflow-y: scroll;
+    overflow-y: auto;
     margin-bottom: 5px;
 }
 
 .orderBox {
     display: flex;
     flex-wrap: wrap;
+    background: rgba(255, 255, 255, 0.753);
+    padding: 10px;
+    font-family: 'Spectral SC', serif;
 }
 
 .orderEach:hover {
-    background-color: olive;
+    background: #89CFF0;
 }
 
 .orderEach {
-    background: lightgrey;
     padding: 5px 7px;
     margin: 1px;
+    background: #C9AE5D;
 }
 
 .all {
     width: 100px;
     text-align: center;
+    background: rgb(175, 152, 81);
 }

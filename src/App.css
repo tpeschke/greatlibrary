@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css?family=Spectral+SC:400,800');
+
+body {
+    height: 90vh;
+    background: black;
+    margin: auto;
+    max-width: 950px;
+}
+
+a {
+    color: whitesmoke;
+}
+
+a:hover {
+    color: #89CFF0
+}
+
+h2 {
+    color: whitesmoke;
+    margin-left: 55px;
+    margin-top: -5px;
+    font-size: 13px;
+	font-family: 'Spectral SC', serif;
+}
+
+.AppShell {
+    margin: auto;
+}
+
+.headerShell {
+    height: 100px;
+    margin-top: 25px;
+}
+
+.headerImage {
+    background-image: url('./images/title.png');
+    height: 65px;
+    max-height: 680px;
+    width: 515px;
+    max-width: 950px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-left: 25px;
+}
+
+.imageShell {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100vw;
+    display: flex;
+    justify-content: space-around;
+}
+
+.image {
+    background-image: url('./images/background.jpg');
+    height: 90vh;
+    max-height: 680px;
+    width: 100vw;
+    max-width: 950px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}

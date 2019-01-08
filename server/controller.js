@@ -101,18 +101,18 @@ module.exports = {
     getOrders: (req, res) => {
         const db = req.app.get('db')
 
-        db.glorders.find().then( result => res.send(result))
+        db.glorders.find().then(result => res.send(result))
     },
     getDomains: (req, res) => {
         const db = req.app.get('db')
 
-        db.gldomains.find().then( result => res.send(result))
+        db.gldomains.find().then(result => res.send(result))
     },
     getSingleList: (req, res) => {
         const db = req.app.get('db')
         let { id } = req.params
 
-        db.glspelllist.find(+id).then( result => res.send(result))
+        db.glspelllist.find(+id).then(result => res.send(result))
     },
 
     /// POST ///

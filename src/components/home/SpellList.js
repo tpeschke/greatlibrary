@@ -33,9 +33,9 @@ export default class SpellList extends Component {
 
         return (
             <div>
-                SpellList
-                <p className="orderEach all" onClick={_=>this.goToView("All")}>View All</p>
+                <h3>Spell List</h3>
                 <div className="orderBox">
+                    <p className="orderEach all" onClick={_=>this.goToView("All")}>View All</p>
                     {orders}
                 </div>
             </div>
