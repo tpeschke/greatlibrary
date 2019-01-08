@@ -116,7 +116,8 @@ export default class View extends Component {
                     <Sidebar 
                         type={type}
                         data={data}
-                        changeView={this.changeView}/>
+                        changeView={this.changeView}
+                        param={param}/>
                 </div>
                 <div className="viewBox viewBoxMain">
                     <MainView 

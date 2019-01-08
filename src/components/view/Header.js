@@ -53,7 +53,7 @@ export default class HeaderMain extends Component {
             return (
                 <div>
                     <h1>{name}</h1>
-                    <p className="headerDescrip">{descrip}</p>
+                    <p className={this.props.type === 'list' ? "headerDescrip" : 'hidden'}>{descrip}</p>
 
                     <button className={this.props.type === 'list' ? 'listButton' : 'hidden'} onClick={_ => this.setState({ edit: !edit })}>Edit Details</button>
                 </div>
