@@ -1,23 +1,58 @@
+@import url('https://fonts.googleapis.com/css?family=Spectral+SC:400,800');
+
+h1 {
+    color: whitesmoke;
+    font-size: 25px;
+    font-family: 'Spectral SC', serif;
+    border-bottom: 3px solid rgb(65, 32, 0);
+    padding-bottom: 5px;
+}
+
+.bold {
+    border-bottom: 1px solid #222
+}
+
 .viewShell {
     display: flex;
     justify-content: space-between;
 }
 
 .viewBox {
-    min-width: 80%;
+    min-width: 650px;
     padding: 15px;
+    background: rgba(255, 255, 255, 0.6);
+    margin: 25px;
+}
+.viewBoxSidebar {
+    min-width: 200px;
+    margin-left: 33px;
+    height: 100%;
 }
 
-.viewBoxSidebar {
-    min-width: 20%;
+.sidebarShell {
+    background:rgba(255, 255, 255, 0.753)
 }
 
 .sidebarSelection {
-    padding: 7px 5px 7px 20px;
+    padding: 5px 10px;
     margin-bottom: 5px;
+    font-family: 'Spectral SC', serif;
 }
 
-.sidebarSelection:hover {
+.sidebarSelection:first-child {
+    padding: 10px 10px 5px 10px;
+}
+
+.sidebarSelection:last-child {
+    padding: 5px 10px 10px 10px
+}
+
+.sidebarItem {
+    border-bottom: 3px solid rgb(65, 32, 0);
+}
+
+.sidebarItem:hover {
+    background-color: #89CFF0
 }
 
 .sidebarSelection:last-child {
@@ -30,26 +65,39 @@
 
 .spellHolder {
     margin-top: 15px;
+    
 }
 
 .holdOuter {
     margin-top: 15px;
+    font-family: 'Spectral SC', serif;
+}
+
+.holdOuter:hover .holdHeader {
+    background-color: #89CFF0
 }
 
 .holdHeader {
     padding: 15px;
+    background: #C9AE5D;
 }
 
 .holddetails {
     padding: 5px 15px;
-    background-color: #222;
-    color: whitesmoke;
+    background-color: whitesmoke;
+    color: rgb(65, 32, 0);
     display: flex;
+    font-size: 13px;
     justify-content: space-between;
+    flex-wrap: wrap;
+    text-align: center;
 }
 
 .holdEffects {
+    border-bottom: 3px solid rgb(65, 32, 0);
     padding: 10px 15px 15px 15px;
+    background-color: grey;
+    color: whitesmoke;
 }
 
 .holdIndividual {
@@ -57,7 +105,15 @@
 }
 
 .holdButton {
+    display: flex;
+    justify-content: space-around;
     margin-top: 15px;
+}
+
+.selectionTitle {
+    background: #C9AE5D;
+    text-align: center;
+    padding-top: 9px;
 }
 
 .selectionModal {
@@ -67,10 +123,13 @@
     top: 10%;
     left: 35%;
     padding: 25px;
+    background: rgba(255, 255, 255);
+    font-family: 'Spectral SC', serif;
 }
 
 .selectTray {
     overflow-y: auto;
+    background: whitesmoke;
 }
 
 .selectItem {
@@ -78,6 +137,7 @@
 }
 
 .selectItem:hover {
+    background-color: #89CFF0
 }
 
 .overlay {
@@ -86,4 +146,51 @@
     position: absolute;
     top: 0;
     left: 0;
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.headerDescrip {
+    padding: 15px 0;
+}
+
+.listButton {
+    width: 100px
+}
+
+.deleteButton {
+    background-color: rgb(199, 50, 50);
+    margin-top: 20px;
+    color: whitesmoke;
+}
+
+.inputShell {
+    display: flex;
+    flex-direction: column;
+}
+
+.inputTitle {
+    height: 33px;
+    padding: 0 5px;
+    border: none;
+    border-bottom: 3px solid rgb(65, 32, 0);
+    background-color: rgba(245, 245, 245, 0.8);
+    font-family: 'Spectral SC', serif;
+}
+
+.inputDescrip {
+    padding: 0 5px;
+    height: 34px;
+    margin: 6px 0;
+    background-color: rgba(245, 245, 245, 0.8);
+    font-family: 'Spectral SC', serif;
+    border: none
+}
+
+.inputButtons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.inputCancel {
+    margin: 0;
 }

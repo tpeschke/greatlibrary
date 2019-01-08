@@ -44,7 +44,7 @@ export default class MainView extends Component {
     }
 
     render() {
-        let { name, descrip, setActive, active, openModel, listid, updateList } = this.props
+        let { name, descrip, setActive, active, openModel, listid, updateList, type } = this.props
 
         let format = this.state.spells.map(val => {
             let { name, duration, aoe, components, effects, req, id } = val
@@ -53,7 +53,7 @@ export default class MainView extends Component {
                     name={name} id={id} duration={duration} aoe={aoe} listid={listid}
                     components={components} effects={effects} req={req}
                     setActive={setActive} active={active} deleteSpell={this.deleteSpell}
-                    type={this.props.type} openModel={openModel} />
+                    type={type} openModel={openModel} />
             )
         })
         return (
@@ -62,13 +62,14 @@ export default class MainView extends Component {
                     name={name}
                     descrip={descrip}
                     listid={listid}
-                    updateList={updateList} />
+                    updateList={updateList}
+                    type={type} />
 
                 <div className="spellHolder">
                     {format}
                 </div>
 
-                <button onClick={this.deleteList}>Delete List</button>
+                <button className={this.props.type === 'list' ? 'deleteButton' : 'hidden'} onClick={this.deleteList}>Delete List</button>
             </div>
         )
     }

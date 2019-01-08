@@ -28,19 +28,19 @@ new CronJob('0 0 0 * * *', _ => {
 ////TESTING TOPLEVEL MIDDLEWARE////
 ///COMMENT OUT WHEN AUTH0 READY///
 ///////////////////////////////////
-// app.use((req, res, next) =>{
-//     if(!req.session.user){
-//         req.session.user = {
-//             id: 1,
-//             user_name: "harrison ford", 
-//             email: "adventureBuilder2049@gmail.com", 
-//             name: "adventure", 
-//             profile_picture : "http://www.placekitten.com/200/250",
-//             auth_id: "adsgfhaoibjmoi5wrhgiuaosfngiuasdhg;ioarhdgv;ou"
-//         }
-//     }
-//     next();
-// })
+app.use((req, res, next) =>{
+    if(!req.session.user){
+        req.session.user = {
+            id: 1,
+            user_name: "harrison ford", 
+            email: "adventureBuilder2049@gmail.com", 
+            name: "adventure", 
+            profile_picture : "http://www.placekitten.com/200/250",
+            auth_id: "adsgfhaoibjmoi5wrhgiuaosfngiuasdhg;ioarhdgv;ou"
+        }
+    }
+    next();
+})
 
 app.get('/checkLogin', (req, res) => {
     if (req.session.user) {

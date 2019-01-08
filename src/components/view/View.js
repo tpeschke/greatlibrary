@@ -118,7 +118,7 @@ export default class View extends Component {
                         data={data}
                         changeView={this.changeView}/>
                 </div>
-                <div className="viewBox">
+                <div className="viewBox viewBoxMain">
                     <MainView 
                         name={name}
                         descrip={descrip}
