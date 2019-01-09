@@ -41,8 +41,8 @@ export default class HeaderMain extends Component {
         if (edit) {
             return (
                 <div className="inputShell">
-                    <input className="inputTitle" type="text" placeholder={name} onChange={e => this.setState({ holdN: e.target.value })} />
-                    <input className="inputDescrip" type="text" placeholder={descrip} onChange={e => this.setState({ holdD: e.target.value })} />
+                    <input className="inputTitle" maxLength="25" type="text" placeholder={name} onChange={e => this.setState({ holdN: e.target.value })} />
+                    <input className="inputDescrip" maxLength="140" type="text" placeholder={descrip} onChange={e => this.setState({ holdD: e.target.value })} />
                     <div className="inputButtons">
                         <button onClick={this.saveDetails}>Save Details</button>
                         <button className='deleteButton inputCancel' onClick={_ => this.setState({ edit: !edit, holdN: null, holdD: null })}>Cancel</button>

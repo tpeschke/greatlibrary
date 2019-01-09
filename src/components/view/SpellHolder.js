@@ -13,7 +13,7 @@ export default function SpellHolder({ name, duration, aoe, components, effects, 
     return (
         <div className="holdOuter" onClick={e => setActive(id, e)}>
             <div className="holdHeader" onClick={e => setActive(id, e)}>
-                {name}
+                {name.replace(/&rsquo;/g, "'")}
             </div>
             <div className="holddetails">
                 <div className={duration ? '' : 'hidden'}>

@@ -33,18 +33,32 @@ module.exports = {
     getDomain: (req, res) => {
         const db = req.app.get('db')
         let { domain } = req.params
-
-        db.get.byDomain(domain.toUpperCase()).then(list => {
-            let finalList = list.map(val => {
-                let finalSpell = db.get.miracleEffect(val.id).then(eff => {
-                    let effects = []
-                    eff.forEach(v => effects.push(v.effect))
-                    return Object.assign(val, { effects })
+        
+        if (domain === 'All') {
+            db.glmiracles.find().then(list => {
+                let finalList = list.map(val => {
+                    let finalSpell = db.get.miracleEffect(val.id).then(eff => {
+                        let effects = []
+                        eff.forEach(v => effects.push(v.effect))
+                        return Object.assign(val, { effects })
+                    })
+                    return finalSpell
                 })
-                return finalSpell
+                Promise.all(finalList).then(finalArray => res.send(finalArray))
             })
-            Promise.all(finalList).then(finalArray => res.send(finalArray))
-        })
+        } else {
+            db.get.byDomain(domain.toUpperCase()).then(list => {
+                let finalList = list.map(val => {
+                    let finalSpell = db.get.miracleEffect(val.id).then(eff => {
+                        let effects = []
+                        eff.forEach(v => effects.push(v.effect))
+                        return Object.assign(val, { effects })
+                    })
+                    return finalSpell
+                })
+                Promise.all(finalList).then(finalArray => res.send(finalArray))
+            })
+        }
     },
     getOrder: (req, res) => {
         const db = req.app.get('db')
@@ -52,6 +66,18 @@ module.exports = {
 
         if (order.toUpperCase === "ELEMENTAL") {
             db.get.elemental(order.toUpperCase()).then(list => {
+                let finalList = list.map(val => {
+                    let finalSpell = db.get.spellEffect(val.id).then(eff => {
+                        let effects = []
+                        eff.forEach(v => effects.push(v.effect))
+                        return Object.assign(val, { effects })
+                    })
+                    return finalSpell
+                })
+                Promise.all(finalList).then(finalArray => res.send(finalArray))
+            })
+        } else if (order === "All") {
+            db.glspells.find().then(list => {
                 let finalList = list.map(val => {
                     let finalSpell = db.get.spellEffect(val.id).then(eff => {
                         let effects = []
@@ -78,7 +104,7 @@ module.exports = {
     },
     allLists: (req, res) => {
         const db = req.app.get('db')
-        let { id } = req.session.user
+        let { id } = req.user
 
         db.get.allLists(id).then(result => res.send(result))
     },
@@ -120,7 +146,7 @@ module.exports = {
     newList: (req, res) => {
         const db = req.app.get('db')
         let { name, description } = req.body
-        let { id } = req.session.user
+        let { id } = req.user
 
         db.add.list(id, name, description).then(result => res.send(result))
     },

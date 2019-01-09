@@ -33,7 +33,7 @@ export default class SpellList extends Component {
 
         return (
             <div>
-                <h3>Spell List</h3>
+                <h3>Spell List by Order</h3>
                 <div className="orderBox">
                     <p className="orderEach all" onClick={_=>this.goToView("All")}>View All</p>
                     {orders}
