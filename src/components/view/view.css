@@ -209,3 +209,29 @@ h1 {
 .inputCancel {
     margin: 0;
 }
+
+@media(max-width: 800px) {
+    .viewBoxSidebar {
+        width: 21.5%;
+        padding: 15px 0;
+    }
+
+    .viewBoxMain {
+        padding-right: 0;
+    }
+
+    .viewBox {
+        min-width: 0;
+        margin: 25px 0;
+    }
+}
+
+@media(max-width: 500px) {
+    .viewBoxSidebar {
+        display: none;
+    }
+
+    .viewBoxMain {
+        padding: 15px 0;
+    }
+}

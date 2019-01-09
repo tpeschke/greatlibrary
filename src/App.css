@@ -203,21 +203,30 @@ h2 {
     height: 70px;
     margin-top: 1em;
     position: relative;
-}
-.mobileFlex {
-  display: flex;
-  justify-content: space-around;
-}
-.headerImage {
-  height: 35px;
-  width: 300px;
-  margin: 0;
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-.mobileFix {
-  margin: 10px 5px;
-  text-align: center;
-}
+    margin-bottom: 50px;
+  }
+
+  .mobileFlex {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .headerImage {
+    height: 35px;
+    width: 300px;
+    margin: 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+
+  .mobileFix {
+    margin: 10px 5px;
+    text-align: center;
+  }
+
+  .home {
+    top: 90px;
+    right: 25px;
+  }
 
 }
