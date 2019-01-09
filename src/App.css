@@ -195,3 +195,29 @@ h2 {
     content: "...";
   }
 }
+
+/* MEDIA QUERIES */
+
+@media (max-width: 425px) {
+  .headerShell {
+    height: 70px;
+    margin-top: 1em;
+    position: relative;
+}
+.mobileFlex {
+  display: flex;
+  justify-content: space-around;
+}
+.headerImage {
+  height: 35px;
+  width: 300px;
+  margin: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.mobileFix {
+  margin: 10px 5px;
+  text-align: center;
+}
+
+}

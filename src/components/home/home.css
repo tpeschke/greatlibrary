@@ -23,8 +23,7 @@ h3 {
 }
 
 .innerBox {
-    height: 200px;
-    /* border: 3px solid rgb(65, 32, 0); */
+    /* height: 200px; */
 }
 
 .innerBox:nth-child(2) {
@@ -78,6 +77,7 @@ h3 {
     background: rgba(255, 255, 255, 0.753);
     padding: 10px;
     font-family: 'Spectral SC', serif;
+    margin-bottom: 25px;
 }
 
 .orderEach:hover {
@@ -126,4 +126,31 @@ button:hover {
     padding: 7px 0;
     min-width: 110px;
     font-size: 13px
+}
+
+/* MEDIA QUERIES */
+
+@media (max-width: 425px) {
+    .outerShell {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .box {
+        width: 100vw
+    }
+
+    .orderEach {
+        height: 45px;
+        width: 45%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .orderBox {
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
 }
