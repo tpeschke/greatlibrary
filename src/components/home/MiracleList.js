@@ -1,12 +1,13 @@
 import React, {Component} from 'react'
 import axios from 'axios'
+import Loading from '../Loading'
 
 export default class MiracleList extends Component {
     constructor() {
         super()
 
         this.state = {
-            domains: []
+            domains: 'loading'
         }
     }
 
@@ -21,6 +22,18 @@ export default class MiracleList extends Component {
     }
 
     render() {
+        if (typeof(this.state.domains) === 'string') {
+            return (
+                <div className="miracleBox">
+                <h3>Miracle List by Domain</h3>
+                <div className="orderBox">
+                    <Loading />
+                </div>
+            </div>
+            )
+        } 
+
+
         let domains = this.state.domains.map(val => {
             if(val.name !== "All") {
                 return (

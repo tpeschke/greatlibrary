@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import _ from 'lodash'
+import Loading from '../Loading'
 
 import SpellHolder from './SpellHolder'
 import Header from './Header'
@@ -10,20 +11,27 @@ export default class MainView extends Component {
         super()
 
         this.state = {
-            spells: []
+            spells: 'loading'
         }
     }
 
     componentWillMount() {
-        let { type, param } = this.props
+        let { type, param, redirect } = this.props
         axios.get('/by' + type + '/' + param).then(res => {
-            this.setState({ spells: res.data })
+            if (res.data === 'no') {
+                redirect('/')
+            } else {
+                this.setState({ spells: res.data })
+            }
         })
     }
 
     componentWillReceiveProps(newProps) {
-        let { type, param } = newProps
+        let { type, param, redirect } = newProps
         axios.get('/by' + type + '/' + param).then(res => {
+            if (res.status === 401) {
+                redirect('/')
+            }
             this.setState({ spells: res.data })
         })
     }
@@ -45,6 +53,16 @@ export default class MainView extends Component {
 
     render() {
         let { name, descrip, setActive, active, openModel, listid, updateList, type } = this.props
+
+        if (typeof (this.state.spells) === 'string') {
+            return (
+                <div>
+                    <div className="spellHolder">
+                        <Loading />
+                    </div>
+                </div>
+            )
+        }
 
         let format = this.state.spells.map(val => {
             let { name, duration, aoe, components, effects, req, id } = val

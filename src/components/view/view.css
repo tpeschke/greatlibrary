@@ -71,6 +71,10 @@ h1 {
     margin-bottom: 0;
 }
 
+.sidebarLoader {
+    padding: 25px 0;
+}
+
 .hidden {
     display: none;
 }

@@ -33,7 +33,7 @@ module.exports = {
     getDomain: (req, res) => {
         const db = req.app.get('db')
         let { domain } = req.params
-        
+
         if (domain === 'All') {
             db.glmiracles.find().then(list => {
                 let finalList = list.map(val => {
@@ -104,25 +104,34 @@ module.exports = {
     },
     allLists: (req, res) => {
         const db = req.app.get('db')
-        let { id } = req.user
-
-        db.get.allLists(id).then(result => res.send(result))
+        
+        if (!req.user) {
+            res.status(401).send('no')
+        } else {
+            let { id } = req.user
+            db.get.allLists(id).then(result => res.send(result))
+        }
     },
     getList: (req, res) => {
         const db = req.app.get('db')
-        let { id } = req.params
-
-        db.get.spellsInList(id).then(result => {
-            let finalList = result.map(val => {
-                let finalSpell = db.get.spellEffect(val.id).then(eff => {
-                    let effects = []
-                    eff.forEach(v => effects.push(v.effect))
-                    return Object.assign(val, { effects })
+        
+        if (!req.user) {
+            res.status(200).send('no')
+        } else {
+            let { id } = req.params
+            db.get.spellsInList(id).then(result => {
+                let finalList = result.map(val => {
+                    let finalSpell = db.get.spellEffect(val.id).then(eff => {
+                        let effects = []
+                        eff.forEach(v => effects.push(v.effect))
+                        return Object.assign(val, { effects })
+                    })
+                    return finalSpell
                 })
-                return finalSpell
+                Promise.all(finalList).then(finalArray => res.send(finalArray))
             })
-            Promise.all(finalList).then(finalArray => res.send(finalArray))
-        })
+        }
+
     },
     getOrders: (req, res) => {
         const db = req.app.get('db')
@@ -148,7 +157,7 @@ module.exports = {
 
         let { id, gl } = req.user
 
-        db.get.listCount(id).then( count => {
+        db.get.listCount(id).then(count => {
             if (gl === 1 || +count[0].count === 1) {
                 res.status(401).send('too many lists')
             } else if (gl * 2 <= +count[0].count) {
@@ -156,7 +165,7 @@ module.exports = {
             } else {
                 db.add.list(id, name, description).then(result => res.send(result))
             }
-         })
+        })
     },
     addSpell: (req, res) => {
         const db = req.app.get('db')

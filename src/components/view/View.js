@@ -14,7 +14,7 @@ export default class View extends Component {
         this.state = {
             type: '',
             param: '',
-            data: [],
+            data: 'loading',
             listid: '',
             name: '',
             descrip: null,

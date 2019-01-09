@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import Loading from '../Loading'
 
 export default class MyList extends Component {
     constructor() {
         super()
 
         this.state = {
-            lists: []
+            lists: 'loading'
         }
     }
 
@@ -31,6 +32,17 @@ export default class MyList extends Component {
     }
 
     render() {
+
+        if (typeof(this.state.lists) === 'string') {
+            return (
+                <div className="listShell">
+                <div className="listInner">
+                    <Loading />
+                </div>
+            </div>
+            )
+        }
+
         let lists = this.state.lists.map(val => {
             return (
                 <div key={val.id} className="listBox" onClick={_=>this.getList(val.id)}>
