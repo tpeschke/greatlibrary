@@ -57,8 +57,8 @@ passport.use(new Auth0Strategy({
 ///COMMENT OUT WHEN AUTH0 READY///
 ///////////////////////////////////
 // app.use((req, res, next) =>{
-//     if(!req.session.user){
-//         req.session.user = {
+//     if(!req.user){
+//         req.user = {
 //             id: 1,
 //             user_name: "harrison ford", 
 //             email: "adventureBuilder2049@gmail.com", 
@@ -91,7 +91,7 @@ app.get('/auth/logout', function (req, res) {
 
 // ===============================
 
-app.get('/checkLogin', (req, res) => req.user.id ? res.send('yep') : null)
+app.get('/checkLogin', (req, res) => req.user ? res.send('yep') : res.status(401).send('nope'))
 app.get('/magic', ctrl.getMagic);
 app.get('/divine', ctrl.getDivine);
 app.get('/orders', ctrl.getOrders);

@@ -22,7 +22,11 @@ export default class MyList extends Component {
 
     newList = () => {
         axios.post('/newList').then( res => {
-            this.props.redirect('/view/list+' + res.data[0].id)
+            if (res.status === 401) {
+
+            } else {
+                this.props.redirect('/view/list+' + res.data[0].id)
+            }
         })
     }
 

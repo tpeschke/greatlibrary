@@ -126,7 +126,6 @@ module.exports = {
     },
     getOrders: (req, res) => {
         const db = req.app.get('db')
-
         db.glorders.find().then(result => res.send(result))
     },
     getDomains: (req, res) => {
@@ -146,9 +145,18 @@ module.exports = {
     newList: (req, res) => {
         const db = req.app.get('db')
         let { name, description } = req.body
-        let { id } = req.user
 
-        db.add.list(id, name, description).then(result => res.send(result))
+        let { id, gl } = req.user
+
+        db.get.listCount(id).then( count => {
+            if (gl === 1 || +count[0].count === 1) {
+                res.status(401).send('too many lists')
+            } else if (gl * 2 <= +count[0].count) {
+                res.status(401).send('too many lists')
+            } else {
+                db.add.list(id, name, description).then(result => res.send(result))
+            }
+         })
     },
     addSpell: (req, res) => {
         const db = req.app.get('db')
