@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 
 import Home from './components/home/Home';
 import View from './components/view/View';
+import HeaderHOC from './components/HeaderHOC';
 
 export default class Routes extends Component {
     render(){
@@ -11,10 +12,10 @@ export default class Routes extends Component {
                 <Switch>
                     <Route 
                         exact path='/'
-                        component={Home}/>
+                        component={HeaderHOC(Home)}/>
                     <Route 
                         path='/view/:type'
-                        component={View}/>
+                        component={HeaderHOC(View)}/>
                 </Switch>
             </div>
         )
