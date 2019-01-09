@@ -1,14 +1,18 @@
 import React from 'react'
 import Loading from '../Loading'
 
-export default function Sidebar({ type, data, changeView, param }) {
-    if (typeof (data) === 'string') {
+export default function Sidebar({ type, data, changeView, param, mobile, ham, openHam }) {
+    if (typeof (data) === 'string' && !mobile) {
         return (
             <div className="sidebarShell">
                 <div className="sidebarLoader">
                     <Loading />
                 </div>
             </div>
+        )
+    } else if (typeof (data) === 'string') {
+        return (
+            <div className="sidebarShell"></div>
         )
     }
 
@@ -27,9 +31,27 @@ export default function Sidebar({ type, data, changeView, param }) {
         )
     })
 
-    return (
-        <div className="sidebarShell">
-            {format}
-        </div>
-    )
+    if (mobile) {
+        return (
+            <div className="hamShell">
+                <div className={ham ? "hamOverlay" : 'hidden'}>
+                    <p className="exit" onClick={openHam}>X</p>
+                    <div className="hamHolder">
+                        {format}
+                    </div>
+                </div>
+                <div className="outerHam" onClick={openHam}>
+                    <div className="innerHam"></div>
+                    <div className="innerHam"></div>
+                    <div className="innerHam"></div>
+                </div>
+            </div>
+        )
+    } else {
+        return (
+            <div className="sidebarShell">
+                {format}
+            </div>
+        )
+    }
 }

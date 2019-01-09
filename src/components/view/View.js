@@ -20,13 +20,15 @@ export default class View extends Component {
             descrip: null,
             lists: [],
             active: null,
-            open: false
+            open: false,
+            mobile: false,
+            ham: false
         }
     }
 
     componentWillMount() {
         let params = this.props.match.params.type.split('+');
-        this.setState({type: params[0], param: params[1]})
+        this.setState({type: params[0], param: params[1], mobile: document.documentElement.clientWidth <= 500 ? true : false})
 
         if (params[0] === 'list') {
             axios.get('/getSingleList/'+ params[1]).then( res => {
@@ -56,7 +58,7 @@ export default class View extends Component {
         let {type} = this.state
         this.props.history.push(`/view/${type}+${newRoute}`)
 
-        this.setState({param: newRoute})
+        this.setState({param: newRoute, ham: this.state.ham ? false : true})
 
         if (type === 'list') {
             axios.get('/getSingleList/'+ newRoute).then( res => {
@@ -107,8 +109,12 @@ export default class View extends Component {
         this.setState({name, descrip, data: newInfo}, _ => this.forceUpdate())
     }
 
+    openHam = () => {
+        this.setState({ham: !this.state.ham})
+    }
+
     render() {
-        let {param, data, name, descrip, type, lists, active, open, listid} = this.state
+        let {param, data, name, descrip, type, lists, active, open, listid, mobile, ham} = this.state
 
         return (
             <div className="viewShell">
@@ -117,7 +123,10 @@ export default class View extends Component {
                         type={type}
                         data={data}
                         changeView={this.changeView}
-                        param={param}/>
+                        param={param}
+                        mobile={mobile}
+                        ham={ham}
+                        openHam={this.openHam}/>
                 </div>
                 <div className="viewBox viewBoxMain">
                     <MainView 
