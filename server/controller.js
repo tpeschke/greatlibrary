@@ -104,7 +104,7 @@ module.exports = {
     },
     allLists: (req, res) => {
         const db = req.app.get('db')
-        
+
         if (!req.user) {
             res.status(401).send('no')
         } else {
@@ -114,7 +114,7 @@ module.exports = {
     },
     getList: (req, res) => {
         const db = req.app.get('db')
-        
+
         if (!req.user) {
             res.status(200).send('no')
         } else {
@@ -148,6 +148,36 @@ module.exports = {
 
         db.glspelllist.find(+id).then(result => res.send(result))
     },
+    search: (req, res) => {
+        const db = req.app.get('db')
+        let { search, type } = req.body
+
+        if (type === 'order') {
+            db.get.searchSpells(search).then(list => {
+                let finalList = list.map(val => {
+                    let finalSpell = db.get.spellEffect(val.id).then(eff => {
+                        let effects = []
+                        eff.forEach(v => effects.push(v.effect))
+                        return Object.assign(val, { effects })
+                    })
+                    return finalSpell
+                })
+                Promise.all(finalList).then(finalArray => res.send(finalArray))
+            })
+        } else {
+            db.get.searchMiracles(search).then(list => {
+                let finalList = list.map(val => {
+                    let finalSpell = db.get.miracleEffect(val.id).then(eff => {
+                        let effects = []
+                        eff.forEach(v => effects.push(v.effect))
+                        return Object.assign(val, { effects })
+                    })
+                    return finalSpell
+                })
+                Promise.all(finalList).then(finalArray => res.send(finalArray))
+            })
+        }
+    },
 
     /// POST ///
 
@@ -175,15 +205,15 @@ module.exports = {
     },
     allSpells: (req, res) => {
         const db = req.app.get('db')
-        let {type, listid} = req.body
-        let array =[]
+        let { type, listid } = req.body
+        let array = []
 
-            db.get.idsByOrder(type.toUpperCase()).then( ids => {
-                ids.forEach(val => {
-                    array.push(db.add.spell(val.id, listid).then())
-                })
-                Promise.all(array).then( _ => res.send('done'))
+        db.get.idsByOrder(type.toUpperCase()).then(ids => {
+            ids.forEach(val => {
+                array.push(db.add.spell(val.id, listid).then())
             })
+            Promise.all(array).then(_ => res.send('done'))
+        })
     },
 
     /// PATCH ///
