@@ -1,11 +1,42 @@
+@import url('https://fonts.googleapis.com/css?family=Spectral+SC:400,800');
+
+p {
+    font-family: 'Spectral SC', serif;
+}
+
 .searchShell {
+    margin: 0 25px;
 }
 
 .searchUpper {
-    background: lightcoral
+    background: rgba(255, 255, 255, 0.6);
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Spectral SC', serif;
+}
+
+input {
+    width: 75%;
+    padding: 0 15px;
+    background: rgba(245, 245, 245, 0.836);
+    height: 30px;
 }
 
 .searchLower {
+    background: rgba(255, 255, 255, 0.6);
+    padding: 15px;
+    margin-top: 15px;
+}
+
+.searchHead {
+    text-align: center;
+    width: 200px
+}
+
+.switchChoice {
+    background: #89CFF0
 }
 
 /* ================== */
@@ -13,7 +44,7 @@
 .switchShell {
     background: whitesmoke;
     display: flex;
-    width: 150px;
+    width: 200px;
     position: relative;
 }
 
@@ -21,7 +52,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 75px;
+    width: 100px;
     height: 26px;
     background: rgba(211, 211, 211, 0.9);
     border: 1px solid grey;
@@ -29,11 +60,42 @@
 }
 
 .switchSelected {
-    left: 75px;
+    left: 100px;
 }
 
 .switchChoice {
-    width: 75px;
+    width: 100px;
     text-align: center;
     padding: 5px;
+}
+
+@media (max-width: 800px) {
+    input {
+        width: 67%;
+    }
+}
+
+@media (max-width: 500px) {
+    .searchShell {
+        margin: 75px 0;
+    }
+
+    .searchUpper {
+        flex-direction: column;
+        height: 125px;
+    }
+
+    input {
+        width: 90%;
+    }
+
+    .searchLower {
+        padding: 15px 0;
+    }
+
+    .mobileP {
+        text-align: center;
+        width: 100%;
+    }
+
 }

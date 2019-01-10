@@ -82,7 +82,7 @@ export default class Search extends Component {
             )
         }) : null;
 
-        let show = typeof (results) === 'string' ? (
+        let show = results === 'loading' ? (
             <div>
                 <div className="spellHolder">
                     <Loading />
@@ -90,6 +90,7 @@ export default class Search extends Component {
             </div>
         ) : (
                 <div>
+                    <p className="mobileP">Displaying {results.length} Results</p>
                     {format}
                 </div>
             )
@@ -97,9 +98,9 @@ export default class Search extends Component {
         return (
             <div className="searchShell">
                 <div className="searchUpper">
-                    <input type="text" placholder="Search" onChange={e => this.sendSearch(e.target.value)} />
-                    <div>
-                        Search
+                    <input type="text" placeholder="Ask the Ancient One" onChange={e => this.sendSearch(e.target.value)} />
+                    <div className="searchSwitcher">
+                        <p className="searchHead">Search</p>
                         <div className="switchShell" onClick={this.switchType}>
                             <div className={selected ? "switchSelector switchSelected" : 'switchSelector'}></div>
                             <div className="switchChoice">Miracles</div>

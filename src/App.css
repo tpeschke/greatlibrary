@@ -238,6 +238,11 @@ h2 {
 
   .home {
     top: 90px;
+    right: 45%;
+  }
+  
+  .search {
+    top: 90px;
     right: 25px;
   }
 
