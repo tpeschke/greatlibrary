@@ -173,6 +173,18 @@ module.exports = {
 
         db.add.spell(spellid, listid).then(_ => res.send('done'))
     },
+    allSpells: (req, res) => {
+        const db = req.app.get('db')
+        let {type, listid} = req.body
+        let array =[]
+
+            db.get.idsByOrder(type.toUpperCase()).then( ids => {
+                ids.forEach(val => {
+                    array.push(db.add.spell(val.id, listid).then())
+                })
+                Promise.all(array).then( _ => res.send('done'))
+            })
+    },
 
     /// PATCH ///
 

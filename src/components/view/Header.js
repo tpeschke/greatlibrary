@@ -35,8 +35,15 @@ export default class HeaderMain extends Component {
         })
     }
 
+    setList = (e) => {
+        let {setActive, openModel, name} = this.props
+        setActive(name, e)
+        openModel(e, 'all')
+    }
+
     render() {
         let { name, descrip, edit } = this.state
+        let {type, loggedIn} = this.props
 
         if (edit) {
             return (
@@ -53,9 +60,13 @@ export default class HeaderMain extends Component {
             return (
                 <div>
                     <h1>{name}</h1>
-                    <p className={this.props.type === 'list' ? "headerDescrip" : 'hidden'}>{descrip}</p>
+                    <p className={type === 'list' ? "headerDescrip" : 'hidden'}>{descrip}</p>
 
-                    <button className={this.props.type === 'list' ? 'listButton' : 'hidden'} onClick={_ => this.setState({ edit: !edit })}>Edit Details</button>
+                    <div>
+                        <button className={type !== 'list' && type !== 'domain' && loggedIn ? 'listButton margin' : 'hidden'} onClick={e=>this.setList(e)}>Add All Spells to List</button>
+                        <button className={type !== 'list' && type !== 'domain' && !loggedIn ? 'listButton margin greyed' : 'hidden'} onClick={e=>this.setList(e)}>Add All Spells to List</button>
+                        <button className={type === 'list' ? 'listButton' : 'hidden'} onClick={_ => this.setState({ edit: !edit })}>Edit Details</button>
+                    </div>
                 </div>
             )
         }

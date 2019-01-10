@@ -105,9 +105,10 @@ app.get('/getSingleList/:id', ctrl.getSingleList);
 
 app.post('/newList', ctrl.newList);
 app.post('/addSpell', ctrl.addSpell);
+app.post('/addAllSpells', ctrl.allSpells);
 
 app.patch('/updateAll', ctrl.updateList);
-app.patch('/updateListInfo', ctrl.updateListInfo); // updates list name / description
+app.patch('/updateListInfo', ctrl.updateListInfo);
 
 app.delete('/deleteList/:id', ctrl.deleteList);
 app.delete('/deleteSpell', ctrl.deleteSpell);

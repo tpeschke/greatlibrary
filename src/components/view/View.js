@@ -22,7 +22,8 @@ export default class View extends Component {
             active: null,
             open: false,
             mobile: false,
-            ham: false
+            ham: false,
+            addType: null
         }
     }
 
@@ -30,6 +31,7 @@ export default class View extends Component {
         let params = this.props.match.params.type.split('+');
         this.setState({type: params[0], param: params[1], mobile: document.documentElement.clientWidth <= 500 ? true : false})
 
+        
         if (params[0] === 'list') {
             axios.get('/getSingleList/'+ params[1]).then( res => {
                 this.setState({name: res.data.name, descrip: res.data.description, listid: res.data.id})
@@ -87,16 +89,22 @@ export default class View extends Component {
         }
     }
 
-    openModel = (e) => {
+    openModel = (e, addType) => {
         e.stopPropagation()
-        this.setState({open: !this.state.open})
+        this.setState({open: !this.state.open, addType})
     }
 
     addSpell = (e, id) => {
-        let {active} = this.state
-        axios.post('/addSpell', {spellid: active, listid: id}).then( _ => {
-            this.openModel(e)
-        })
+        let {active, addType} = this.state
+        if (addType === 'all') {
+            axios.post(`/addAllSpells`, {type: active, listid: id}).then( _ => {
+                this.openModel(e)
+            })
+        } else if (addType === 'single') {
+            axios.post('/addSpell', {spellid: active, listid: id}).then( _ => {
+                this.openModel(e)
+            })
+        }
     }
 
     updateList = (id, name, descrip) => {
