@@ -74,7 +74,7 @@ export default class MainView extends Component {
             let { name, duration, aoe, components, effects, req, id } = val
             return (
                 <SpellHolder key={id}
-                    name={name} id={id} duration={duration} aoe={aoe} listid={listid}
+                    name={name} id={id} duration={duration} aoe={aoe}
                     components={components} effects={effects} req={req}
                     setActive={setActive} active={active} deleteSpell={this.deleteSpell}
                     type={type} openModel={openModel} loggedIn={this.state.loggedIn} />

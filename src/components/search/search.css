@@ -1,0 +1,39 @@
+.searchShell {
+}
+
+.searchUpper {
+    background: lightcoral
+}
+
+.searchLower {
+}
+
+/* ================== */
+
+.switchShell {
+    background: whitesmoke;
+    display: flex;
+    width: 150px;
+    position: relative;
+}
+
+.switchSelector {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 75px;
+    height: 26px;
+    background: rgba(211, 211, 211, 0.9);
+    border: 1px solid grey;
+    transition: .6s;
+}
+
+.switchSelected {
+    left: 75px;
+}
+
+.switchChoice {
+    width: 75px;
+    text-align: center;
+    padding: 5px;
+}

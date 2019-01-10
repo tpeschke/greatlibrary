@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import Home from './components/home/Home';
 import View from './components/view/View';
 import HeaderHOC from './components/HeaderHOC';
+import Search from './components/search/Search';
 
 export default class Routes extends Component {
     render(){
@@ -16,6 +17,9 @@ export default class Routes extends Component {
                     <Route 
                         path='/view/:type'
                         component={HeaderHOC(View)}/>
+                    <Route 
+                        path='/search'
+                        component={HeaderHOC(Search)}/>
                 </Switch>
             </div>
         )

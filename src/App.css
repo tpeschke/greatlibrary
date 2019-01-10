@@ -76,6 +76,18 @@ h2 {
   color: #C9AE5D;
 }
 
+.search {
+  font-size: 35px;
+  color: whitesmoke;
+  position: absolute;
+  top: 50px;
+  right: 25px;
+}
+
+.search:hover {
+  color: #C9AE5D;
+}
+
 /* LOADER */
 
 .loader {

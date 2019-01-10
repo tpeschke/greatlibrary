@@ -45,8 +45,8 @@ export default function SpellHolder({ name, duration, aoe, components, effects, 
                 {eff}
 
                 <div className="holdButton">
-                    <button className={type !== "list" && loggedIn ? "" : "hidden"} onClick={e=>openModel(e,'single')}>Add To A List</button>
-                    <button className={type !== "list" && !loggedIn ? "greyed" : "hidden"}>Add To A List</button>
+                    <button className={type === "order" && loggedIn ? "" : "hidden"} onClick={e=>openModel(e,'single')}>Add To A List</button>
+                    <button className={type === "order" && !loggedIn ? "greyed" : "hidden"}>Add To A List</button>
                     <button className={type === "list" ? "deleteButton" : "hidden"} onClick={deleteSpell}>Remove from List</button>
                 </div>
             </div>

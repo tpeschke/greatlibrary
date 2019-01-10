@@ -150,7 +150,7 @@ module.exports = {
     },
     search: (req, res) => {
         const db = req.app.get('db')
-        let { search, type } = req.body
+        let { search, type } = req.query
 
         if (type === 'order') {
             db.get.searchSpells(search).then(list => {
