@@ -230,3 +230,9 @@ h2 {
   }
 
 }
+
+@media (max-width: 800px) { 
+  .image {
+    background-size: 100%;
+}
+}
