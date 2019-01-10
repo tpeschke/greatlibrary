@@ -7,7 +7,8 @@ export default class MyList extends Component {
         super()
 
         this.state = {
-            lists: 'loading'
+            lists: 'loading',
+            warning: false
         }
     }
 
@@ -21,31 +22,37 @@ export default class MyList extends Component {
         this.props.redirect('/view/list+' + id)
     }
 
-    newList = () => {
-        axios.post('/newList').then( res => {
-            if (res.status === 401) {
-
+    newList = (e) => {
+        axios.post('/newList').then(res => {
+            if (res.data === 'too many lists') {
+                this.openWarning(e)
             } else {
                 this.props.redirect('/view/list+' + res.data[0].id)
             }
         })
     }
 
-    render() {
+    openWarning = (e) => {
+        e.stopPropagation()
+        this.setState({warning: !this.state.warning})
+    }
 
-        if (typeof(this.state.lists) === 'string') {
+    render() {
+        let {lists, warning} = this.state
+
+        if (typeof (lists) === 'string') {
             return (
                 <div className="listShell">
-                <div className="listInner">
-                    <Loading />
+                    <div className="listInner">
+                        <Loading />
+                    </div>
                 </div>
-            </div>
             )
         }
 
-        let lists = this.state.lists.map(val => {
+        let listsFormat = lists.map(val => {
             return (
-                <div key={val.id} className="listBox" onClick={_=>this.getList(val.id)}>
+                <div key={val.id} className="listBox" onClick={_ => this.getList(val.id)}>
                     <h4 className="listTitle">{val.name}</h4>
                     <p className={val.description ? "listDescrip" : 'listNoDescrip'}>{val.description}</p>
                 </div>
@@ -55,10 +62,21 @@ export default class MyList extends Component {
         return (
             <div className="listShell">
                 <div className="listInner">
-                    {lists}
+                    {listsFormat}
                 </div>
                 <div className="listButton">
                     <button id="listButton" onClick={this.newList}>New List</button>
+                </div>
+
+                <div className={warning ? "" : "hidden"}>
+                    <div className="overlay" onClick={this.openWarning}></div>
+                    <div className="selectionModal">
+                        <h1 className="warningTitle">Your Account Has Too Many Lists</h1>
+                        <div className="warningTray">
+                                You'll need to delete one of your other lists
+                                or upgrade your Account Membership
+                        </div>
+                    </div>
                 </div>
             </div>
         )

@@ -123,6 +123,19 @@ button:hover {
     font-size: 13px
 }
 
+.warningTitle {
+    background-color: rgb(199, 50, 50);
+    color: whitesmoke;
+    text-align: center;
+    padding: 5px;
+    font-size: 17px;
+}
+
+.warningTray {
+    padding: 10px;
+    text-align: center;
+}
+
 /* MEDIA QUERIES */
 
 @media (max-width: 425px) {

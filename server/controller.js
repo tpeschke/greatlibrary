@@ -159,9 +159,9 @@ module.exports = {
 
         db.get.listCount(id).then(count => {
             if (gl === 1 || +count[0].count === 1) {
-                res.status(401).send('too many lists')
+                res.status(200).send('too many lists')
             } else if (gl * 2 <= +count[0].count) {
-                res.status(401).send('too many lists')
+                res.status(200).send('too many lists')
             } else {
                 db.add.list(id, name, description).then(result => res.send(result))
             }
