@@ -1,1 +1,1 @@
-select * from glorders where name like $1
+select * from glorders where name like $1 order by name asc

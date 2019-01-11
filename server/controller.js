@@ -259,7 +259,8 @@ module.exports = {
                     }
                 }
 
-                for (let i = 0; i < indexes.length; i++) {
+                indexes.push(descript.length)
+                for (let i = 0; i < indexes.length - 1; i++) {
                     let offset = descript[indexes[i] + 3].replace(/<(?:.|\n)*?>/gm, '') === '&nbsp;' ? 4 : 3;
                     let orders = descript[indexes[i] + offset].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, '').split(' | ')
                     let effects = []
@@ -294,7 +295,8 @@ module.exports = {
                     }
                 }
 
-                for (let i = 0; i < indexes.length; i++) {
+                indexes.push(descript.length)
+                for (let i = 0; i < indexes.length - 1; i++) {
                     let effects = []
                     let offset = descript[indexes[i] + 2].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, '') === "PREREQUISITE" ? 2 : 0;
                     let domains = descript[indexes[i] + 1].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, '').split(' | ')
@@ -341,8 +343,9 @@ module.exports = {
                     indexes.push(i - 2)
                 }
             }
-
-            for (let i = 0; i < indexes.length; i++) {
+            
+            indexes.push(descript.length)
+            for (let i = 0; i < indexes.length - 1; i++) {
                 let offset = descript[indexes[i] + 3].replace(/<(?:.|\n)*?>/gm, '') === '&nbsp;' ? 4 : 3;
                 let effects = []
 
@@ -378,7 +381,8 @@ module.exports = {
                 }
             }
 
-            for (let i = 0; i < indexes.length; i++) {
+            indexes.push(descript.length)
+            for (let i = 0; i < indexes.length- 1; i++) {
                 let effects = []
                 let offset = descript[indexes[i] + 2].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, '') === "PREREQUISITE" ? 2 : 0;
 
