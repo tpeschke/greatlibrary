@@ -56,19 +56,19 @@ passport.use(new Auth0Strategy({
 ////TESTING TOPLEVEL MIDDLEWARE////
 ///COMMENT OUT WHEN AUTH0 READY///
 ///////////////////////////////////
-app.use((req, res, next) =>{
-    if(!req.user){
-        req.user = {
-            id: 1,
-            user_name: "harrison ford", 
-            email: "adventureBuilder2049@gmail.com", 
-            name: "adventure", 
-            profile_picture : "http://www.placekitten.com/200/250",
-            auth_id: "adsgfhaoibjmoi5wrhgiuaosfngiuasdhg;ioarhdgv;ou"
-        }
-    }
-    next();
-})
+// app.use((req, res, next) =>{
+//     if(!req.user){
+//         req.user = {
+//             id: 1,
+//             user_name: "harrison ford", 
+//             email: "adventureBuilder2049@gmail.com", 
+//             name: "adventure", 
+//             profile_picture : "http://www.placekitten.com/200/250",
+//             auth_id: "adsgfhaoibjmoi5wrhgiuaosfngiuasdhg;ioarhdgv;ou"
+//         }
+//     }
+//     next();
+// })
 
 app.get('/auth', passport.authenticate('auth0'));
 app.get('/auth/callback', passport.authenticate('auth0', {

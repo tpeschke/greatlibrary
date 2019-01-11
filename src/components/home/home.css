@@ -138,7 +138,7 @@ button:hover {
 
 /* MEDIA QUERIES */
 
-@media (max-width: 425px) {
+@media (max-width: 500px) {
     .outerShell {
         display: flex;
         flex-direction: column;
@@ -150,6 +150,7 @@ button:hover {
         display: flex;
         justify-content: space-between;
         flex-direction: column;
+        padding: 15px 0;
     }
 
     .orderEach {
