@@ -28,11 +28,11 @@ export default function SpellHolder({ name, duration, aoe, components, effects, 
                     </p>
                     {aoe}
                 </div>
-                <div className={components && components !== "None" ? '' : 'hidden'}>
+                <div className={components && components !== "none" ? '' : 'hidden'}>
                     <p className="bold">
                         Components:
                     </p>
-                    {components.replace(/&rsquo;/g, "'")}
+                    {!components ? '' : components.replace(/&rsquo;/g, "'")}
                 </div>
                 <div className={req && req !== "none" ? '' : 'hidden'}>
                     <p className="bold">

@@ -35,7 +35,7 @@ export default class MainView extends Component {
     componentWillReceiveProps(newProps) {
         let { type, param, redirect } = newProps
         axios.get('/by' + type + '/' + param).then(res => {
-            if (res.status === 401) {
+            if (res.data.length === 0) {
                 redirect('/')
             }
             this.setState({ spells: res.data })
