@@ -5,7 +5,7 @@ export default function SpellHolder({ name, duration, aoe, components, effects, 
     let eff = effects.map((val, i) => {
         return (
             <div className="holdIndividual" key={i}>
-                <p>{val.replace(/&rsquo;/g, "'").replace(/&rdquo;/g, "'").replace(/&ldquo;/g, "'").replace(/&nbsp;/g, '')}</p>
+                <p>{val.replace(/&rsquo;/g, "'").replace(/&rdquo;/g, "'").replace(/&ldquo;/g, "'").replace(/&nbsp;/g, "")}</p>
             </div>
         )
     })
