@@ -183,17 +183,16 @@ module.exports = {
 
     newList: (req, res) => {
         const db = req.app.get('db')
-        let { name, description } = req.body
 
         let { id, gl } = req.user
-
+        
         db.get.listCount(id).then(count => {
-            if (gl === 1 || +count[0].count === 1) {
+            if (gl === 1 && +count[0].count === 1) {
                 res.status(200).send('too many lists')
             } else if (gl * 2 <= +count[0].count) {
                 res.status(200).send('too many lists')
             } else {
-                db.add.list(id, name, description).then(result => res.send(result))
+                db.add.list(id, "New List", "New Description").then(result => res.send(result))
             }
         })
     },

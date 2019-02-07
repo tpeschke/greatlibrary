@@ -322,4 +322,9 @@ h1 {
         background: grey;
         color: #222;
     }
+
+    .selectionModal {
+        width: 90%;
+        left: 5%;
+    }
 }
