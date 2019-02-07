@@ -6,8 +6,8 @@ export default class HeaderMain extends Component {
         super()
 
         this.state = {
-            name: 'hello',
-            descrip: 'des',
+            name: '',
+            descrip: '',
             holdN: null,
             holdD: null,
             edit: false

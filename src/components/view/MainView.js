@@ -20,11 +20,13 @@ export default class MainView extends Component {
         let { type, param, redirect } = this.props
         axios.get('/checkLogin').then( res => {
             if (res.data === 'nope') {} else {
+                console.log('1st')
                 this.setState({loggedIn: true})
             }
         })
         axios.get('/by' + type + '/' + param).then(res => {
             if (res.data === 'no') {
+                console.log("2nd")
                 redirect('/')
             } else {
                 this.setState({ spells: res.data })

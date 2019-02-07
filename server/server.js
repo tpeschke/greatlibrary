@@ -91,7 +91,7 @@ app.get('/auth/logout', function (req, res) {
 
 // ===============================
 
-app.get('/checkLogin', (req, res) => req.user ? res.send('yep') : res.status(401).send('nope'))
+app.get('/checkLogin', (req, res) => req.user ? res.send('yep') : res.send('nope'))
 app.get('/magic', ctrl.getMagic);
 app.get('/divine', ctrl.getDivine);
 app.get('/orders', ctrl.getOrders);
