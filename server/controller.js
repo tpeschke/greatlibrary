@@ -106,7 +106,7 @@ module.exports = {
         const db = req.app.get('db')
 
         if (!req.user) {
-            res.status(401).send('no')
+            res.send('no')
         } else {
             let { id } = req.user
             db.get.allLists(id).then(result => res.send(result))
@@ -116,6 +116,7 @@ module.exports = {
         const db = req.app.get('db')
 
         if (!req.user) {
+            console.log('hello')
             res.status(200).send('no')
         } else {
             let { id } = req.params

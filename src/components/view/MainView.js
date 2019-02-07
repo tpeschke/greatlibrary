@@ -18,15 +18,8 @@ export default class MainView extends Component {
 
     componentWillMount() {
         let { type, param, redirect } = this.props
-        axios.get('/checkLogin').then( res => {
-            if (res.data === 'nope') {} else {
-                console.log('1st')
-                this.setState({loggedIn: true})
-            }
-        })
         axios.get('/by' + type + '/' + param).then(res => {
             if (res.data === 'no') {
-                console.log("2nd")
                 redirect('/')
             } else {
                 this.setState({ spells: res.data })
@@ -37,7 +30,7 @@ export default class MainView extends Component {
     componentWillReceiveProps(newProps) {
         let { type, param, redirect } = newProps
         axios.get('/by' + type + '/' + param).then(res => {
-            if (res.data.length === 0) {
+            if (res.data === 'no') {
                 redirect('/')
             }
             this.setState({ spells: res.data })

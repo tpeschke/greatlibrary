@@ -16,8 +16,12 @@ export default class Home extends Component {
     }
 
     componentWillMount() {
-        axios.get('/checkLogin').then(res => {
-            this.setState({ loggedIn: res.data })
+        axios.get('/getAlllists').then(res => {
+            if (res.data === 'no') {
+                this.setState({loggedIn: false})
+            } else {
+                this.setState({loggedIn: true})
+            }
         })
     }
 
@@ -28,7 +32,7 @@ export default class Home extends Component {
     }
 
     render() {
-        let leftDiv = this.state.loggedIn ? <MyList redirect={this.props.history.push} /> : <Login logIn={this.logIn} />
+        let leftDiv = this.state.loggedIn ? <MyList redirect={this.props.history.push} /> : <Login />
 
         return (
             <div className="outerShell">
