@@ -1,6 +1,14 @@
 import React from 'react'
+import { isArray } from 'util';
 
 export default function ListSelection({ lists, open, openModel, addSpell }) {
+
+    if (!isArray(lists)) {
+        return (
+            <div>
+            </div>
+        )
+    }
 
     let format = lists.map(val => {
         return (
