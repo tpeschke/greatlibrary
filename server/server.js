@@ -22,11 +22,6 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-new CronJob('0 0 0 * * *', _ => {
-    const a = app.get('db')
-    ctrl.updateList({ body: { auth, a } }, null)
-}, null, true, 'America/Los_Angeles')
-
 passport.use(new Auth0Strategy({
     domain: process.env.AUTH_DOMAIN,
     clientID: process.env.AUTH_CLIENT_ID,
@@ -56,15 +51,12 @@ passport.use(new Auth0Strategy({
 ////TESTING TOPLEVEL MIDDLEWARE////
 ///COMMENT OUT WHEN AUTH0 READY///
 ///////////////////////////////////
-// app.use((req, res, next) =>{
-//     if(!req.user){
+// app.use((req, res, next) => {
+//     if (!req.user) {
 //         req.user = {
 //             id: 1,
-//             user_name: "harrison ford", 
-//             email: "adventureBuilder2049@gmail.com", 
-//             name: "adventure", 
-//             profile_picture : "http://www.placekitten.com/200/250",
-//             auth_id: "adsgfhaoibjmoi5wrhgiuaosfngiuasdhg;ioarhdgv;ou"
+//             email: "mr.peschke@gmail.com",
+//             patreon: 1
 //         }
 //     }
 //     next();
@@ -92,8 +84,6 @@ app.get('/auth/logout', function (req, res) {
 // ===============================
 
 app.get('/checkLogin', (req, res) => req.user ? res.send('yep') : res.send('nope'))
-app.get('/magic', ctrl.getMagic);
-app.get('/divine', ctrl.getDivine);
 app.get('/orders', ctrl.getOrders);
 app.get('/domains', ctrl.getDomains);
 app.get('/single/:id', ctrl.getSingle);
@@ -108,7 +98,6 @@ app.post('/newList', ctrl.newList);
 app.post('/addSpell', ctrl.addSpell);
 app.post('/addAllSpells', ctrl.allSpells);
 
-app.patch('/updateAll', ctrl.updateList);
 app.patch('/updateListInfo', ctrl.updateListInfo);
 
 app.delete('/deleteList/:id', ctrl.deleteList);

@@ -1,11 +1,18 @@
 import React from 'react'
 
-export default function SpellHolder({ name, duration, aoe, components, effects, req, id, active, setActive, type, openModel, deleteSpell, loggedIn }) {
+export default function SpellHolder({ name, duration, aoe, components, positive, negative, base_cost, req, id, active, setActive, type, openModel, deleteSpell, loggedIn }) {
 
-    let eff = effects.map((val, i) => {
+    let positiveEffects = positive.map((val, i) => {
         return (
             <div className="holdIndividual" key={i}>
-                <p>{val.replace(/&rsquo;/g, "'").replace(/&rdquo;/g, "'").replace(/&ldquo;/g, "'").replace(/&nbsp;/g, "")}</p>
+                <p>{val}</p>
+            </div>
+        )
+    })
+    let negativeEffects = negative.map((val, i) => {
+        return (
+            <div className="holdIndividual" key={i}>
+                <p>{val}</p>
             </div>
         )
     })
@@ -13,7 +20,13 @@ export default function SpellHolder({ name, duration, aoe, components, effects, 
     return (
         <div className="holdOuter" onClick={e => setActive(id, e)}>
             <div className="holdHeader" onClick={e => setActive(id, e)}>
-                {name.replace(/&rsquo;/g, "'")}
+                {name}
+
+                <div className='baseCost'>
+                    <p className="bold cost">
+                        Base Cost: {base_cost}
+                    </p>
+                </div>
             </div>
             <div className="holddetails">
                 <div className={duration ? '' : 'hidden'}>
@@ -24,9 +37,15 @@ export default function SpellHolder({ name, duration, aoe, components, effects, 
                 </div>
                 <div className={aoe ? '' : 'hidden'}>
                     <p className="bold">
-                        Area of Effects:
+                        Radius:
                     </p>
                     {aoe}
+                </div>
+                <div className={req && req !== "none" ? '' : 'hidden'}>
+                    <p className="bold">
+                        Requirement:
+                    </p>
+                    {req}
                 </div>
                 <div className={components && components !== "none" ? '' : 'hidden'}>
                     <p className="bold">
@@ -34,20 +53,27 @@ export default function SpellHolder({ name, duration, aoe, components, effects, 
                     </p>
                     {!components ? '' : components.replace(/&rsquo;/g, "'")}
                 </div>
-                <div className={req && req !== "none" ? '' : 'hidden'}>
-                    <p className="bold">
-                        Requirement: 
-                    </p>
-                    {req}
-                </div>
             </div>
             <div className={id === active ? "holdEffects" : "holdEffects hidden"}>
-                {eff}
+                <div>
+                    <h4>Postive:</h4>
+                    {positiveEffects}
+                </div>
+                <div>
+                    <h4>Negative:</h4>
+                    {negativeEffects}
+                </div>
 
-                <div className="holdButton">
-                    <button className={type === "order" && loggedIn ? "" : "hidden"} onClick={e=>openModel(e,'single')}>Add To A List</button>
-                    <button className={type === "order" && !loggedIn ? "greyed" : "hidden"}>Add To A List</button>
-                    <button className={type === "list" ? "deleteButton" : "hidden"} onClick={deleteSpell}>Remove from List</button>
+
+                <div className="buttonShell">
+                    <div className="holdButton">
+                        <button className={type === "order" && loggedIn ? "" : "hidden"} onClick={e => openModel(e, 'single')}>Add To A List</button>
+                        <button className={type === "order" && !loggedIn ? "greyed" : "hidden"}>Add To A List</button>
+                        <button className={type === "list" ? "deleteButton" : "hidden"} onClick={deleteSpell}>Remove from List</button>
+                    </div>
+                    <div className="holdButton">
+                        <button onClick={e => openModel(e, 'single')}>Modify Spell</button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-select distinct glspells.id as id, glspells.name as name, components, duration, aoe from glspellorders
+select distinct glspells.id as id, glspells.name as name, components, duration, aoe, base_cost from glspellorders
 join glorders on glorders.id = glspellorders.orderid
 join glspells on glspells.id = glspellorders.spellid
 where 

@@ -64,13 +64,14 @@ export default class MainView extends Component {
                 </div>
             )
         }
-
+        
         let format = this.state.spells.map(val => {
-            let { name, duration, aoe, components, effects, req, id } = val
+            let { name, duration, aoe, components, positive, negative, base_cost, req, id } = val
+
             return (
                 <SpellHolder key={id}
-                    name={name} id={id} duration={duration} aoe={aoe}
-                    components={components} effects={effects} req={req}
+                    name={name} id={id} duration={duration} aoe={aoe} base_cost={base_cost}
+                    components={components} positive={positive} negative={negative} req={req}
                     setActive={setActive} active={active} deleteSpell={this.deleteSpell}
                     type={type} openModel={openModel} loggedIn={this.state.loggedIn} />
             )

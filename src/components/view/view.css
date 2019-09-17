@@ -8,8 +8,21 @@ h1 {
     padding-bottom: 5px;
 }
 
+h4 {
+    margin-top: 7px;
+    border-bottom: 1px solid black; 
+    color: whitesmoke;
+    text-indent: 0;
+    padding-bottom: 5px;
+}
+
 .bold {
-    border-bottom: 1px solid #222
+    border-bottom: 1px solid #222;
+    padding: 5px 0px;
+}
+
+.cost {
+    padding: 0px;
 }
 
 .viewShell {
@@ -96,6 +109,14 @@ h1 {
 .holdHeader {
     padding: 15px;
     background: #C9AE5D;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.baseCost {
+    font-size: 14px;
+    text-align: center;
 }
 
 .holddetails {
@@ -104,7 +125,7 @@ h1 {
     color: rgb(65, 32, 0);
     display: flex;
     font-size: 13px;
-    justify-content: space-between;
+    justify-content: space-evenly;
     flex-wrap: wrap;
     text-align: center;
 }
@@ -113,7 +134,7 @@ h1 {
     border-bottom: 3px solid rgb(65, 32, 0);
     padding: 10px 15px 15px 15px;
     background-color: grey;
-    color: whitesmoke;
+    text-indent: 2.5em;
 }
 
 .holdIndividual {
@@ -220,6 +241,13 @@ h1 {
 
 .margin {
     margin-top: 15px
+}
+
+.buttonShell {
+    display: flex;
+    margin: 0 auto;
+    width: 80%;
+    justify-content: space-evenly;
 }
 
 /* ========================== */

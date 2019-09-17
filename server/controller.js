@@ -1,6 +1,3 @@
-const { magic, divine, auth } = require('./serv-config')
-    , rp = require('request-promise')
-
 module.exports = {
     /// GET ///
 
@@ -67,22 +64,34 @@ module.exports = {
         if (order.toUpperCase === "ELEMENTAL") {
             db.get.elemental(order.toUpperCase()).then(list => {
                 let finalList = list.map(val => {
-                    let finalSpell = db.get.spellEffect(val.id).then(eff => {
-                        let effects = []
-                        eff.forEach(v => effects.push(v.effect))
-                        return Object.assign(val, { effects })
+                    let finalSpell = db.get.spellPositiveEffect(val.id).then(eff => {
+                        let positive = []
+                        let negative = []
+                        eff.forEach(v => positive.push(v.effect))
+                        db.get.spellNegativeEffect(val.id).then(negEff => {
+                            negEff.forEach(nv => negative.push(nv.effect))
+                            return Object.assign(val, { negative })
+                        })
+                        return Object.assign(val, { positive, negative })
                     })
                     return finalSpell
                 })
+                console.log(finalList)
                 Promise.all(finalList).then(finalArray => res.send(finalArray))
             })
         } else if (order === "All") {
             db.glspells.find().then(list => {
                 let finalList = list.map(val => {
-                    let finalSpell = db.get.spellEffect(val.id).then(eff => {
-                        let effects = []
-                        eff.forEach(v => effects.push(v.effect))
-                        return Object.assign(val, { effects })
+                    let finalSpell = db.get.spellPositiveEffect(val.id).then(eff => {
+                        let positive = []
+                        let negative = []
+                        eff.forEach(v => positive.push(v.effect))
+                        db.get.spellNegativeEffect(val.id).then(negEff => {
+                            let negative = []
+                            negEff.forEach(nv => negative.push(nv.effect))
+                            return Object.assign(val, { negative })
+                        })
+                        return Object.assign(val, { positive, negative })
                     })
                     return finalSpell
                 })
@@ -91,14 +100,24 @@ module.exports = {
         } else {
             db.get.byOrder(order.toUpperCase()).then(list => {
                 let finalList = list.map(val => {
-                    let finalSpell = db.get.spellEffect(val.id).then(eff => {
-                        let effects = []
-                        eff.forEach(v => effects.push(v.effect))
-                        return Object.assign(val, { effects })
+                    let finalSpell = db.get.spellPositiveEffect(val.id).then(eff => {
+                        let positive = []
+                        eff.forEach(v => positive.push(v.effect))
+                        return Object.assign(val, { positive })
                     })
                     return finalSpell
                 })
-                Promise.all(finalList).then(finalArray => res.send(finalArray))
+                Promise.all(finalList).then(finalArray => {
+                    let spellArrayWithNegative = finalArray.map(val => {
+                        let spellWithNegative = db.get.spellNegativeEffect(val.id).then(negEff => {
+                            let negative = []
+                            negEff.forEach(nv => negative.push(nv.effect))
+                            return Object.assign(val, { negative })
+                        })
+                        return spellWithNegative
+                    })
+                    Promise.all(spellArrayWithNegative).then(finalSpellArray => res.send(finalSpellArray))
+                })
             })
         }
     },
@@ -116,16 +135,19 @@ module.exports = {
         const db = req.app.get('db')
 
         if (!req.user) {
-            console.log('hello')
             res.status(200).send('no')
         } else {
             let { id } = req.params
             db.get.spellsInList(id).then(result => {
                 let finalList = result.map(val => {
-                    let finalSpell = db.get.spellEffect(val.id).then(eff => {
-                        let effects = []
-                        eff.forEach(v => effects.push(v.effect))
-                        return Object.assign(val, { effects })
+                    let finalSpell = db.get.spellPositiveEffect(val.id).then(eff => {
+                        let positive = []
+                        let negative = []
+                        eff.forEach(v => positive.push(v.effect))
+                        db.get.spellNegativeEffect(val.id).then(negEff => {
+                            negEff.forEach(nv => negative.push(nv.effect))
+                        })
+                        return Object.assign(val, { positive, negative })
                     })
                     return finalSpell
                 })
@@ -156,10 +178,14 @@ module.exports = {
         if (type === 'order') {
             db.get.searchSpells(search).then(list => {
                 let finalList = list.map(val => {
-                    let finalSpell = db.get.spellEffect(val.id).then(eff => {
-                        let effects = []
-                        eff.forEach(v => effects.push(v.effect))
-                        return Object.assign(val, { effects })
+                    let finalSpell = db.get.spellPositiveEffect(val.id).then(eff => {
+                        let positive = []
+                        let negative = []
+                        eff.forEach(v => positive.push(v.effect))
+                        db.get.spellNegativeEffect(val.id).then(negEff => {
+                            negEff.forEach(nv => negative.push(nv.effect))
+                        })
+                        return Object.assign(val, { positive, negative })
                     })
                     return finalSpell
                 })
@@ -186,7 +212,7 @@ module.exports = {
         const db = req.app.get('db')
 
         let { id, gl } = req.user
-        
+
         db.get.listCount(id).then(count => {
             if (gl === 1 && +count[0].count === 1) {
                 res.status(200).send('too many lists')
@@ -238,170 +264,5 @@ module.exports = {
         let { id } = req.params
 
         db.delete.list(id).then(_ => res.send('done'))
-    },
-
-    // UPDATE AND PURE GETS
-
-    updateList: (req, res) => {
-        if (req.body.auth === auth) {
-            const db = req.app ? req.app.get('db') : req.body.a
-            let promise = []
-            let spellCut = '>SPELL DESCRIPTIONS<'
-            let miracleCut = '>MIRACLE DESCRIPTIONS<'
-
-            rp(magic).then(html => {
-                let descript = html.split(spellCut)[1].match(/<span.*?>.*?<\/span>/g)
-                let indexes = []
-
-                for (let i = 0; i < descript.length; i++) {
-                    if (descript[i].indexOf('ORDERS') !== -1) {
-                        indexes.push(i - 2)
-                    }
-                }
-
-                indexes.push(descript.length)
-                for (let i = 0; i < indexes.length - 1; i++) {
-                    let offset = descript[indexes[i] + 3].replace(/<(?:.|\n)*?>/gm, '') === '&nbsp;' ? 4 : 3;
-                    let orders = descript[indexes[i] + offset].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, '').split(' | ')
-                    let effects = []
-
-                    for (x = indexes[i] + offset + 8; x < indexes[i + 1]; x++) {
-                        effects.push(descript[x].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, ''))
-                    }
-
-                    db.update.spells(descript[indexes[i]].replace(/<(?:.|\n)*?>/gm, ''), descript[indexes[i] + offset + 2].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, ''), descript[indexes[i] + offset + 4].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, ''), descript[indexes[i] + offset + 6].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, ''))
-                        .then(id => {
-                            let spellid = id[0].id
-                            effects.forEach((val, i) => {
-                                promise.push(db.update.spellEffects(val, i + 1, spellid).then().catch(e => console.log(e)))
-                            })
-                            db.delete.spellOrders(id[0].id).then(_ => {
-                                orders.forEach(val => {
-                                    promise.push(db.add.spellOrder(spellid, val).then().catch(e => console.log(e)))
-                                })
-                            })
-                        }).catch(e => console.log(e))
-                }
-            })
-
-            rp(divine).then(html => {
-                let descript = html.split(miracleCut)[1].match(/<span.*?>.*?<\/span>/g)
-                let indexes = []
-
-                for (let i = 0; i < descript.length; i++) {
-                    if (descript[i].indexOf('EFFECT') !== -1) {
-                        let index = descript[i - 2].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, '') === 'PREREQUISITE' ? i - 4 : i - 2;
-                        indexes.push(index)
-                    }
-                }
-
-                indexes.push(descript.length)
-                for (let i = 0; i < indexes.length - 1; i++) {
-                    let effects = []
-                    let offset = descript[indexes[i] + 2].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, '') === "PREREQUISITE" ? 2 : 0;
-                    let domains = descript[indexes[i] + 1].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, '').split(' | ')
-
-                    for (x = indexes[i] + offset + 3; x < indexes[i + 1]; x++) {
-                        let effect = descript[x].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, '')
-                        if (effect !== '') {
-                            effects.push(descript[x].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, ''))
-                        }
-                    }
-
-                    db.update.miracles(descript[indexes[i]].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, ''), offset === 0 ? 'none' : descript[indexes[i] + 3].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, ''))
-                        .then(id => {
-                            let miracleid = id[0].id
-                            effects.forEach((val, i) => {
-                                promise.push(db.update.miracleEffects(val, i + 1, miracleid).then())
-                            })
-                            domains.forEach((val) => {
-                                promise.push(db.update.miracleDomains(miracleid, val.toUpperCase()).then())
-                            })
-                            db.delete.miracleDomains(id[0].id).then(_ => {
-                                domains.forEach(val => {
-                                    promise.push(db.add.miracleDomains(miracleid, val).then())
-                                })
-                            })
-                        })
-
-                }
-            })
-
-            Promise.all(promise).then(final => res.send("done"))
-        }
-    },
-    getMagic: (req, res) => {
-        let description = '>SPELL DESCRIPTIONS<'
-
-        rp(magic).then(html => {
-            let descript = html.split(description)[1].match(/<span.*?>.*?<\/span>/g)
-            let indexes = []
-            let spells = []
-
-            for (let i = 0; i < descript.length; i++) {
-                if (descript[i].indexOf('ORDERS') !== -1) {
-                    indexes.push(i - 2)
-                }
-            }
-            
-            indexes.push(descript.length)
-            for (let i = 0; i < indexes.length - 1; i++) {
-                let offset = descript[indexes[i] + 3].replace(/<(?:.|\n)*?>/gm, '') === '&nbsp;' ? 4 : 3;
-                let effects = []
-
-                for (x = indexes[i] + offset + 8; x < indexes[i + 1]; x++) {
-                    effects.push(descript[x].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, '').replace('/&RSQUO;/g', "'"))
-                }
-
-                spells.push({
-                    name: descript[indexes[i]].replace(/<(?:.|\n)*?>/gm, ''),
-                    orders: descript[indexes[i] + offset].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, '').split(' | '),
-                    duration: descript[indexes[i] + offset + 2].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, ''),
-                    aoe: descript[indexes[i] + offset + 4].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, ''),
-                    components: descript[indexes[i] + offset + 6].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, ''),
-                    effects
-                })
-            }
-
-            res.send(spells)
-        })
-    },
-    getDivine: (req, res) => {
-        let description = '>MIRACLE DESCRIPTIONS<'
-
-        rp(divine).then(html => {
-            let descript = html.split(description)[1].match(/<span.*?>.*?<\/span>/g)
-            let indexes = []
-            let miracles = []
-
-            for (let i = 0; i < descript.length; i++) {
-                if (descript[i].indexOf('EFFECT') !== -1) {
-                    let index = descript[i - 2].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, '') === 'PREREQUISITE' ? i - 4 : i - 2;
-                    indexes.push(index)
-                }
-            }
-
-            indexes.push(descript.length)
-            for (let i = 0; i < indexes.length- 1; i++) {
-                let effects = []
-                let offset = descript[indexes[i] + 2].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, '') === "PREREQUISITE" ? 2 : 0;
-
-                for (x = indexes[i] + offset + 3; x < indexes[i + 1]; x++) {
-                    let effect = descript[x].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, '')
-                    if (effect !== '') {
-                        effects.push(descript[x].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, ''))
-                    }
-                }
-
-                miracles.push({
-                    name: descript[indexes[i]].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, ''),
-                    convenants: descript[indexes[i] + 1].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, '').split(' | '),
-                    req: offset === 0 ? 'none' : descript[indexes[i] + 3].replace(/<(?:.|\n)*?>/gm, '').replace(/&nbsp;/g, ''),
-                    effects
-                })
-            }
-
-            res.send(miracles)
-        })
     }
 }
