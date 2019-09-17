@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './search.css'
 import SpellHolder from '../view/SpellHolder'
-import ListSelection from '../view/ListSelection'
+import ListSelection from '../view/models/ListSelection'
 import Loading from '../Loading'
 import axios from 'axios'
 
@@ -16,6 +16,7 @@ export default class Search extends Component {
             active: null,
             loggedIn: false,
             open: false,
+            modOpen: false,
             lists: []
         }
     }
@@ -60,6 +61,11 @@ export default class Search extends Component {
         this.setState({open: !this.state.open})
     }
 
+    openModModel = (e) => {
+        e.stopPropagation()
+        this.setState({modOpen: !this.state.modOpen})
+    }
+
     addSpell = (e, id) => {
         let {active} = this.state
             axios.post('/addSpell', {spellid: active, listid: id}).then( _ => {
@@ -68,7 +74,7 @@ export default class Search extends Component {
     }
 
     render() {
-        let { results, selected, active, type, lists, open, loggedIn } = this.state
+        let { results, selected, active, type, lists, open, loggedIn, modOpen } = this.state
 
         let format = Array.isArray(results) ? results.map(val => {
             let { name, duration, aoe, components, effects, req, id } = val
@@ -117,6 +123,17 @@ export default class Search extends Component {
                     open={open}
                     openModel={this.openModel}
                     addSpell={this.addSpell}/>
+
+                
+                <div className={modOpen ? "" : "hidden"}>
+                    <div className="overlay" onClick={this.openModModel}></div>
+                    <div className="selectionModal">
+                        <h1 className="warningTitle">Modify</h1>
+                        <div className="warningTray">
+                                Hello!
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }

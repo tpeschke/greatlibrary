@@ -121,7 +121,8 @@ button:hover {
     justify-content: space-around;
     padding: 7px 0;
     min-width: 110px;
-    font-size: 13px
+    font-size: 13px;
+    align-items: center;
 }
 
 .warningTitle {

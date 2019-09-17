@@ -163,6 +163,11 @@ h4 {
     font-family: 'Spectral SC', serif;
 }
 
+.modifyModal {
+    width: 60%;
+    left: 20%
+}
+
 .selectTray {
     overflow-y: auto;
     background: whitesmoke;
@@ -182,7 +187,7 @@ h4 {
     position: absolute;
     top: 0;
     left: 0;
-    background: rgba(0, 0, 0, 0.25);
+    background: rgba(0, 0, 0, 0.5);
 }
 
 .headerDescrip {
@@ -207,6 +212,7 @@ h4 {
 .inputTitle {
     height: 33px;
     padding: 0 5px;
+    width: 100%;
     border: none;
     border-bottom: 3px solid rgb(65, 32, 0);
     background-color: rgba(245, 245, 245, 0.8);
@@ -215,6 +221,7 @@ h4 {
 
 .inputDescrip {
     padding: 0 5px;
+    width: 100%;
     height: 34px;
     margin: 6px 0;
     background-color: rgba(245, 245, 245, 0.8);

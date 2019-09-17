@@ -7,8 +7,6 @@ class App extends Component {
   render() {
     return (
       <div className="AppShell">
-        
-
         <Routes />
         <div className="imageShell">
           <div className="image"></div>

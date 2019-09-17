@@ -66,36 +66,44 @@ module.exports = {
                 let finalList = list.map(val => {
                     let finalSpell = db.get.spellPositiveEffect(val.id).then(eff => {
                         let positive = []
-                        let negative = []
                         eff.forEach(v => positive.push(v.effect))
-                        db.get.spellNegativeEffect(val.id).then(negEff => {
-                            negEff.forEach(nv => negative.push(nv.effect))
-                            return Object.assign(val, { negative })
-                        })
-                        return Object.assign(val, { positive, negative })
+                        return Object.assign(val, { positive })
                     })
                     return finalSpell
                 })
-                console.log(finalList)
-                Promise.all(finalList).then(finalArray => res.send(finalArray))
+                Promise.all(finalList).then(finalArray => {
+                    let spellArrayWithNegative = finalArray.map(val => {
+                        let spellWithNegative = db.get.spellNegativeEffect(val.id).then(negEff => {
+                            let negative = []
+                            negEff.forEach(nv => negative.push(nv.effect))
+                            return Object.assign(val, { negative })
+                        })
+                        return spellWithNegative
+                    })
+                    Promise.all(spellArrayWithNegative).then(finalSpellArray => res.send(finalSpellArray))
+                })
             })
         } else if (order === "All") {
             db.glspells.find().then(list => {
                 let finalList = list.map(val => {
                     let finalSpell = db.get.spellPositiveEffect(val.id).then(eff => {
                         let positive = []
-                        let negative = []
                         eff.forEach(v => positive.push(v.effect))
-                        db.get.spellNegativeEffect(val.id).then(negEff => {
+                        return Object.assign(val, { positive })
+                    })
+                    return finalSpell
+                })
+                Promise.all(finalList).then(finalArray => {
+                    let spellArrayWithNegative = finalArray.map(val => {
+                        let spellWithNegative = db.get.spellNegativeEffect(val.id).then(negEff => {
                             let negative = []
                             negEff.forEach(nv => negative.push(nv.effect))
                             return Object.assign(val, { negative })
                         })
-                        return Object.assign(val, { positive, negative })
+                        return spellWithNegative
                     })
-                    return finalSpell
+                    Promise.all(spellArrayWithNegative).then(finalSpellArray => res.send(finalSpellArray))
                 })
-                Promise.all(finalList).then(finalArray => res.send(finalArray))
             })
         } else {
             db.get.byOrder(order.toUpperCase()).then(list => {
@@ -142,16 +150,22 @@ module.exports = {
                 let finalList = result.map(val => {
                     let finalSpell = db.get.spellPositiveEffect(val.id).then(eff => {
                         let positive = []
-                        let negative = []
                         eff.forEach(v => positive.push(v.effect))
-                        db.get.spellNegativeEffect(val.id).then(negEff => {
-                            negEff.forEach(nv => negative.push(nv.effect))
-                        })
-                        return Object.assign(val, { positive, negative })
+                        return Object.assign(val, { positive })
                     })
                     return finalSpell
                 })
-                Promise.all(finalList).then(finalArray => res.send(finalArray))
+                Promise.all(finalList).then(finalArray => {
+                    let spellArrayWithNegative = finalArray.map(val => {
+                        let spellWithNegative = db.get.spellNegativeEffect(val.id).then(negEff => {
+                            let negative = []
+                            negEff.forEach(nv => negative.push(nv.effect))
+                            return Object.assign(val, { negative })
+                        })
+                        return spellWithNegative
+                    })
+                    Promise.all(spellArrayWithNegative).then(finalSpellArray => res.send(finalSpellArray))
+                })
             })
         }
 

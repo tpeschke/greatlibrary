@@ -1,3 +1,3 @@
-select glspells.id, name, duration, aoe, components from gllist
+select glspells.id, name, duration, aoe, components, base_cost from gllist
 join glspells on glspells.id = gllist.spellid
 where gllist.listid = $1

@@ -18,6 +18,11 @@ export default class MainView extends Component {
 
     componentWillMount() {
         let { type, param, redirect } = this.props
+        if (!this.state.loggedIn) {
+            axios.get('/checkLogin').then(res => {
+                this.setState({ loggedIn: res.data })
+            })
+        }
         axios.get('/by' + type + '/' + param).then(res => {
             if (res.data === 'no') {
                 redirect('/')
@@ -53,7 +58,7 @@ export default class MainView extends Component {
     }
 
     render() {
-        let { name, descrip, setActive, active, openModel, listid, updateList, type } = this.props
+        let { name, descrip, setActive, active, openModel, openModModel, listid, updateList, type } = this.props
 
         if (typeof (this.state.spells) === 'string') {
             return (
@@ -73,7 +78,7 @@ export default class MainView extends Component {
                     name={name} id={id} duration={duration} aoe={aoe} base_cost={base_cost}
                     components={components} positive={positive} negative={negative} req={req}
                     setActive={setActive} active={active} deleteSpell={this.deleteSpell}
-                    type={type} openModel={openModel} loggedIn={this.state.loggedIn} />
+                    type={type} openModel={openModel} openModModel={openModModel} loggedIn={this.state.loggedIn} />
             )
         })
         return (

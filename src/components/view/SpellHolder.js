@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function SpellHolder({ name, duration, aoe, components, positive, negative, base_cost, req, id, active, setActive, type, openModel, deleteSpell, loggedIn }) {
+export default function SpellHolder({ name, duration, aoe, components, positive, negative, base_cost, req, id, active, setActive, type, openModel, openModModel, deleteSpell, loggedIn }) {
 
     let positiveEffects = positive.map((val, i) => {
         return (
@@ -71,8 +71,8 @@ export default function SpellHolder({ name, duration, aoe, components, positive,
                         <button className={type === "order" && !loggedIn ? "greyed" : "hidden"}>Add To A List</button>
                         <button className={type === "list" ? "deleteButton" : "hidden"} onClick={deleteSpell}>Remove from List</button>
                     </div>
-                    <div className="holdButton">
-                        <button onClick={e => openModel(e, 'single')}>Modify Spell</button>
+                    <div className={type === "list" ? "hidden" : " holdButton"}>
+                        <button onClick={e => openModModel(e, {name, duration, aoe, components, positive, negative, base_cost})}>Modify Spell</button>
                     </div>
                 </div>
             </div>
