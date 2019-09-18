@@ -11,18 +11,12 @@ export default class MainView extends Component {
         super()
 
         this.state = {
-            spells: 'loading',
-            loggedIn: false
+            spells: 'loading'
         }
     }
 
     componentWillMount() {
         let { type, param, redirect } = this.props
-        if (!this.state.loggedIn) {
-            axios.get('/checkLogin').then(res => {
-                this.setState({ loggedIn: res.data })
-            })
-        }
         axios.get('/by' + type + '/' + param).then(res => {
             if (res.data === 'no') {
                 redirect('/')
@@ -78,7 +72,7 @@ export default class MainView extends Component {
                     name={name} id={id} duration={duration} aoe={aoe} base_cost={base_cost}
                     components={components} positive={positive} negative={negative} req={req}
                     setActive={setActive} active={active} deleteSpell={this.deleteSpell}
-                    type={type} openModel={openModel} openModModel={openModModel} loggedIn={this.state.loggedIn} />
+                    type={type} openModel={openModel} openModModel={openModModel} loggedIn={this.props.loggedIn} />
             )
         })
         return (
@@ -91,7 +85,7 @@ export default class MainView extends Component {
                     type={type}
                     openModel={openModel}
                     setActive={setActive}
-                    loggedIn={this.state.loggedIn} />
+                    loggedIn={this.props.loggedIn} />
 
                 <div className="spellHolder">
                     {format}

@@ -173,6 +173,21 @@ h4 {
     background: whitesmoke;
 }
 
+.modTray {
+    background: whitesmoke;
+    padding: 0px 15px;
+}
+
+.modTray h3 {
+    color: black;
+    border: none;
+    padding: 10px 0;
+}
+
+.modTray .holdButton button {
+    margin-bottom: 15px;
+}
+
 .selectItem {
     padding: 10px;
 }

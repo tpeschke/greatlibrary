@@ -26,7 +26,8 @@ export default class View extends Component {
             spell: null,
             mobile: false,
             ham: false,
-            addType: null
+            addType: null,
+            loggedIn: false
         }
     }
 
@@ -34,6 +35,11 @@ export default class View extends Component {
         let params = this.props.match.params.type.split('+');
         this.setState({ type: params[0], param: params[1], mobile: document.documentElement.clientWidth <= 500 ? true : false })
 
+        if (!this.state.loggedIn) {
+            axios.get('/checkLogin').then(res => {
+                this.setState({ loggedIn: res.data })
+            })
+        }
 
         if (params[0] === 'list') {
             axios.get('/getSingleList/' + params[1]).then(res => {
@@ -99,7 +105,7 @@ export default class View extends Component {
 
     openModModel = (e, spell) => {
         e.stopPropagation()
-        this.setState({ modOpen: !this.state.modOpen, spell: this.state.modOpen ? null : spell })
+        this.setState({ modOpen: !this.state.modOpen, spell })
     }
 
     addSpell = (e, id) => {
@@ -130,7 +136,7 @@ export default class View extends Component {
     }
 
     render() {
-        let { param, data, name, descrip, type, lists, active, open, listid, mobile, ham, modOpen, spell } = this.state
+        let { param, data, name, descrip, type, lists, active, open, listid, mobile, ham, modOpen, spell, loggedIn } = this.state
 
         return (
             <div className="viewShell">
@@ -157,7 +163,8 @@ export default class View extends Component {
                         deleteSpell={this.deleteSpell}
                         listid={listid}
                         redirect={this.props.history.push}
-                        updateList={this.updateList} />
+                        updateList={this.updateList}
+                        loggedIn={loggedIn} />
                 </div>
 
                 <ListSelection
@@ -169,7 +176,8 @@ export default class View extends Component {
                 <ModSpell 
                    modOpen={modOpen}
                    openModModel={this.openModModel}
-                   spell={spell} />
+                   spell={spell}
+                   loggedIn={loggedIn} />
             </div>
         )
     }
