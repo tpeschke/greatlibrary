@@ -51,7 +51,7 @@ export default function SpellHolder({ name, duration, aoe, components, positive,
                     <p className="bold">
                         Components:
                     </p>
-                    {!components ? '' : components.replace(/&rsquo;/g, "'")}
+                    {!components ? '' : components}
                 </div>
             </div>
             <div className={id === active ? "holdEffects" : "holdEffects hidden"}>
@@ -72,7 +72,7 @@ export default function SpellHolder({ name, duration, aoe, components, positive,
                         <button className={type === "list" ? "deleteButton" : "hidden"} onClick={deleteSpell}>Remove from List</button>
                     </div>
                     <div className={type === "list" ? "hidden" : " holdButton"}>
-                        <button onClick={e => openModModel(e, {name, duration, aoe, components, positive, negative, base_cost})}>Modify Spell</button>
+                        <button className="modifyButton" onClick={e => openModModel(e, {name, duration, aoe, components, positive, negative, base_cost})}>Modify Spell</button>
                     </div>
                 </div>
             </div>

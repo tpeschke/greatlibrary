@@ -27,7 +27,8 @@ export default class View extends Component {
             mobile: false,
             ham: false,
             addType: null,
-            loggedIn: false
+            loggedIn: false,
+            modifiedSpell: {}
         }
     }
 
@@ -98,9 +99,13 @@ export default class View extends Component {
         }
     }
 
-    openModel = (e, addType) => {
+    openModel = (e, addType, modSpell) => {
         e.stopPropagation()
-        this.setState({ open: !this.state.open, addType })
+        if (modSpell) {
+            this.setState({ open: !this.state.open, addType, modifiedSpell: modSpell })
+        } else {
+            this.setState({ open: !this.state.open, addType })
+        }
     }
 
     openModModel = (e, spell) => {
@@ -109,13 +114,14 @@ export default class View extends Component {
     }
 
     addSpell = (e, id) => {
-        let { active, addType } = this.state
+        let { active, addType, modifiedSpell } = this.state
+        console.log(modifiedSpell)
         if (addType === 'all') {
             axios.post(`/addAllSpells`, { type: active, listid: id }).then(_ => {
                 this.openModel(e)
             })
         } else if (addType === 'single') {
-            axios.post('/addSpell', { spellid: active, listid: id }).then(_ => {
+            axios.post('/addSpell', { spellid: active, listid: id, ...modifiedSpell }).then(_ => {
                 this.openModel(e)
             })
         }
@@ -176,6 +182,7 @@ export default class View extends Component {
                 <ModSpell 
                    modOpen={modOpen}
                    openModModel={this.openModModel}
+                   openModel={this.openModel}
                    spell={spell}
                    loggedIn={loggedIn} />
             </div>

@@ -239,9 +239,9 @@ module.exports = {
     },
     addSpell: (req, res) => {
         const db = req.app.get('db')
-        let { spellid, listid } = req.body
+        let { spellid, listid, degree, pos, neg, aoe, duration } = req.body
 
-        db.add.spell(spellid, listid).then(_ => res.send('done'))
+        db.add.spell(spellid, listid, degree, aoe, duration, pos, neg).then(_ => res.send('done'))
     },
     allSpells: (req, res) => {
         const db = req.app.get('db')
