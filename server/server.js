@@ -86,9 +86,11 @@ app.get('/auth/logout', function (req, res) {
 app.get('/checkLogin', (req, res) => req.user ? res.send('yep') : res.send('nope'))
 app.get('/orders', ctrl.getOrders);
 app.get('/domains', ctrl.getDomains);
+app.get('/degrees', ctrl.getDegrees);
 app.get('/single/:id', ctrl.getSingle);
 app.get('/byDomain/:domain', ctrl.getDomain);
 app.get('/byOrder/:order', ctrl.getOrder);
+app.get('/byLibrary/:degree', ctrl.getDegree);
 app.get('/byList/:id', ctrl.getList);
 app.get('/getAllLists', ctrl.allLists);
 app.get('/getSingleList/:id', ctrl.getSingleList);

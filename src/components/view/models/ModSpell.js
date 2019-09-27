@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import Loading from '../../Loading'
 import Dropdown from 'react-dropdown'
 import 'react-dropdown/style.css'
-import axios from 'axios'
 
 export default class ListSelection extends Component {
     constructor() {
@@ -56,7 +55,7 @@ export default class ListSelection extends Component {
 
                 this.setState({
                     spellName: next.spell.name,
-                    durationAmount: +duration[0],
+                    durationAmount: isNaN(+duration[0]) ? 1 : +duration[0],
                     durationUnit: duration[1],
                     baseCost: cost,
                     radiusAmount: +radius[0],
@@ -70,9 +69,9 @@ export default class ListSelection extends Component {
         let { durationIncrease, durationAmount, durationUnit, radiusIncrease, radiusAmount, radiusUnit, rangeIncrease, magnitude, posBuyDown, negBuyDown, aoeType, baseCost, radiusRangeMultiplier } = this.state
         let spellPointTotal = ((magnitude + posBuyDown + negBuyDown) * baseCost) + radiusIncrease + Math.ceil((rangeIncrease) * radiusRangeMultiplier * baseCost) + (baseCost * (durationIncrease - 1))
 
-        if (spellPointTotal % 10 === 0 && spellPointTotal !== 0) {
+        if (spellPointTotal !== 0) {
             // degree, 
-            let degree = Math.floor(spellPointTotal / 10)
+            let degree = Math.ceil(spellPointTotal / 10)
             // pos, 
             let pos = magnitude - posBuyDown
             // neg

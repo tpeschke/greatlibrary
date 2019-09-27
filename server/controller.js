@@ -129,6 +129,48 @@ module.exports = {
             })
         }
     },
+    getDegree: (req, res) => {
+        const db = req.app.get('db')
+
+        if (!req.user) {
+            res.status(200).send('no')
+        } else {
+            let { degree } = req.params
+            db.get.spellsInDegree(`${degree}`).then(result => {
+                let finalList = result.map(val => {
+                    let finalSpell = db.get.spellPositiveEffect(val.id).then(eff => {
+                        let positive = []
+                        eff.forEach(v => {
+                            if (val.modposbuydown) {
+                                positive.push(v.effect.replace(/X/ig, val.modposbuydown))
+                            } else {
+                                positive.push(v.effect)
+                            }
+                        })
+                        return Object.assign(val, { positive })
+                    })
+                    return finalSpell
+                })
+                Promise.all(finalList).then(finalArray => {
+                    let spellArrayWithNegative = finalArray.map(val => {
+                        let spellWithNegative = db.get.spellNegativeEffect(val.id).then(negEff => {
+                            let negative = []
+                            negEff.forEach(nv => {
+                                if (val.modnegbuydown) {
+                                    negative.push(nv.effect.replace(/X/ig, val.modnegbuydown))
+                                } else {
+                                    negative.push(nv.effect)
+                                }
+                            })
+                            return Object.assign(val, { negative })
+                        })
+                        return spellWithNegative
+                    })
+                    Promise.all(spellArrayWithNegative).then(finalSpellArray => res.send(finalSpellArray))
+                })
+            })
+        }
+    },
     allLists: (req, res) => {
         const db = req.app.get('db')
 
@@ -150,7 +192,13 @@ module.exports = {
                 let finalList = result.map(val => {
                     let finalSpell = db.get.spellPositiveEffect(val.id).then(eff => {
                         let positive = []
-                        eff.forEach(v => positive.push(v.effect))
+                        eff.forEach(v => {
+                            if (val.modposbuydown) {
+                                positive.push(v.effect.replace(/X/ig, val.modposbuydown))
+                            } else {
+                                positive.push(v.effect)
+                            }
+                        })
                         return Object.assign(val, { positive })
                     })
                     return finalSpell
@@ -159,7 +207,13 @@ module.exports = {
                     let spellArrayWithNegative = finalArray.map(val => {
                         let spellWithNegative = db.get.spellNegativeEffect(val.id).then(negEff => {
                             let negative = []
-                            negEff.forEach(nv => negative.push(nv.effect))
+                            negEff.forEach(nv => {
+                                if (val.modnegbuydown) {
+                                    negative.push(nv.effect.replace(/X/ig, val.modnegbuydown))
+                                } else {
+                                    negative.push(nv.effect)
+                                }
+                            })
                             return Object.assign(val, { negative })
                         })
                         return spellWithNegative
@@ -178,6 +232,11 @@ module.exports = {
         const db = req.app.get('db')
 
         db.gldomains.find().then(result => res.send(result))
+    },
+    getDegrees: (req, res) => {
+        const db = req.app.get('db')
+
+        db.get.getDegrees().then(result => res.send(result))
     },
     getSingleList: (req, res) => {
         const db = req.app.get('db')

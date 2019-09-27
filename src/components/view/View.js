@@ -56,6 +56,13 @@ export default class View extends Component {
             axios.get('/getAllLists').then(res => {
                 this.setState({ lists: res.data })
             })
+        } else if (params[0] === 'library') {
+            axios.get('/degrees').then(res => {
+                this.setState({ data: res.data, name: params[1] })
+            })
+            axios.get('/getAllLists').then(res => {
+                this.setState({ lists: res.data })
+            })
         } else {
             axios.get('/domains').then(res => {
                 this.setState({ data: res.data, name: params[1] })
@@ -69,7 +76,6 @@ export default class View extends Component {
     changeView = (newRoute) => {
         let { type } = this.state
         this.props.history.push(`/view/${type}+${newRoute}`)
-
         this.setState({ param: newRoute, ham: this.state.ham ? false : true })
 
         if (type === 'list') {
@@ -83,6 +89,8 @@ export default class View extends Component {
             axios.get('/orders').then(res => {
                 this.setState({ data: res.data, name: newRoute })
             })
+        } else if (type === 'library') {
+
         } else {
             axios.get('/domains').then(res => {
                 this.setState({ data: res.data, name: newRoute })
@@ -115,7 +123,6 @@ export default class View extends Component {
 
     addSpell = (e, id) => {
         let { active, addType, modifiedSpell } = this.state
-        console.log(modifiedSpell)
         if (addType === 'all') {
             axios.post(`/addAllSpells`, { type: active, listid: id }).then(_ => {
                 this.openModel(e)

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function SpellHolder({ name, duration, aoe, components, positive, negative, base_cost, req, id, active, setActive, type, openModel, openModModel, deleteSpell, loggedIn }) {
+export default function SpellHolder({ name, duration, aoe, components, positive, negative, base_cost, req, id, active, setActive, type, openModel, openModModel, deleteSpell, loggedIn, modmag, modaoe, modduration }) {
 
     let positiveEffects = positive.map((val, i) => {
         return (
@@ -24,7 +24,7 @@ export default function SpellHolder({ name, duration, aoe, components, positive,
 
                 <div className='baseCost'>
                     <p className="bold cost">
-                        Base Cost: {base_cost}
+                        {modmag ? `Degree: ${modmag}` : `Base Cost: ${base_cost}`}
                     </p>
                 </div>
             </div>
@@ -33,13 +33,13 @@ export default function SpellHolder({ name, duration, aoe, components, positive,
                     <p className="bold">
                         Duration:
                     </p>
-                    {duration}
+                    {modduration ? modduration : duration}
                 </div>
                 <div className={aoe ? '' : 'hidden'}>
                     <p className="bold">
                         Radius:
                     </p>
-                    {aoe}
+                    {modaoe ? modaoe : aoe}
                 </div>
                 <div className={req && req !== "none" ? '' : 'hidden'}>
                     <p className="bold">
