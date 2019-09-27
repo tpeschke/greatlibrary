@@ -19,7 +19,7 @@ export default class ListSelection extends Component {
             radiusIncrease: 0,
             rangeIncrease: 0,
             radiusRangeMultiplier: 2,
-            magnitude: 0,
+            magnitude: 1,
             posBuyDown: 0,
             negBuyDown: 0,
             aoeType: "Full +0",
@@ -152,7 +152,7 @@ export default class ListSelection extends Component {
                 radiusIncrease: 0,
                 rangeIncrease: 0,
                 radiusRangeMultiplier: 2,
-                magnitude: 0,
+                magnitude: 1,
                 posBuyDown: 0,
                 negBuyDown: 0,
                 aoeType: "Full +0",
@@ -170,7 +170,7 @@ export default class ListSelection extends Component {
             } else if (type === 'negBuyDown') {
                 this.setState({ negBuyDown: value })
             }
-        } else if (type === 'magnitude' && value > -1) {
+        } else if (type === 'magnitude' && value > 0) {
             this.setState({ magnitude: value }, _ => {
                 if (value < this.state.posBuyDown) {
                     this.setState({ posBuyDown: value })
