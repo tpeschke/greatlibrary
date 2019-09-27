@@ -140,13 +140,15 @@ module.exports = {
                 let finalList = result.map(val => {
                     let finalSpell = db.get.spellPositiveEffect(val.id).then(eff => {
                         let positive = []
-                        eff.forEach(v => {
-                            if (val.modposbuydown) {
-                                positive.push(v.effect.replace(/X/ig, val.modposbuydown))
-                            } else {
-                                positive.push(v.effect)
-                            }
-                        })
+                        if (val.modposbuydown !== '0') {
+                            eff.forEach(v => {
+                                if (val.modposbuydown) {
+                                    positive.push(v.effect.replace(/[X]/ig, val.modposbuydown))
+                                } else {
+                                    positive.push(v.effect)
+                                }
+                            })
+                        }
                         return Object.assign(val, { positive })
                     })
                     return finalSpell
@@ -155,13 +157,15 @@ module.exports = {
                     let spellArrayWithNegative = finalArray.map(val => {
                         let spellWithNegative = db.get.spellNegativeEffect(val.id).then(negEff => {
                             let negative = []
-                            negEff.forEach(nv => {
-                                if (val.modnegbuydown) {
-                                    negative.push(nv.effect.replace(/X/ig, val.modnegbuydown))
-                                } else {
-                                    negative.push(nv.effect)
-                                }
-                            })
+                            if (val.modnegbuydown !== '0') {
+                                negEff.forEach(nv => {
+                                    if (val.modnegbuydown) {
+                                        negative.push(nv.effect.replace(/[X]/ig, val.modnegbuydown))
+                                    } else {
+                                        negative.push(nv.effect)
+                                    }
+                                })
+                            }
                             return Object.assign(val, { negative })
                         })
                         return spellWithNegative
@@ -192,13 +196,15 @@ module.exports = {
                 let finalList = result.map(val => {
                     let finalSpell = db.get.spellPositiveEffect(val.id).then(eff => {
                         let positive = []
-                        eff.forEach(v => {
-                            if (val.modposbuydown) {
-                                positive.push(v.effect.replace(/X/ig, val.modposbuydown))
-                            } else {
-                                positive.push(v.effect)
-                            }
-                        })
+                        if (val.modposbuydown !== '0') {
+                            eff.forEach(v => {
+                                if (val.modposbuydown) {
+                                    positive.push(v.effect.replace(/[X]/ig, val.modposbuydown))
+                                } else {
+                                    positive.push(v.effect)
+                                }
+                            })
+                        }
                         return Object.assign(val, { positive })
                     })
                     return finalSpell
@@ -207,13 +213,15 @@ module.exports = {
                     let spellArrayWithNegative = finalArray.map(val => {
                         let spellWithNegative = db.get.spellNegativeEffect(val.id).then(negEff => {
                             let negative = []
-                            negEff.forEach(nv => {
-                                if (val.modnegbuydown) {
-                                    negative.push(nv.effect.replace(/X/ig, val.modnegbuydown))
-                                } else {
-                                    negative.push(nv.effect)
-                                }
-                            })
+                            if (val.modnegbuydown !== '0') {
+                                negEff.forEach(nv => {
+                                    if (val.modnegbuydown) {
+                                        negative.push(nv.effect.replace(/[X]/ig, val.modnegbuydown))
+                                    } else {
+                                        negative.push(nv.effect)
+                                    }
+                                })
+                            }
                             return Object.assign(val, { negative })
                         })
                         return spellWithNegative

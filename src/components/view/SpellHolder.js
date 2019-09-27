@@ -55,15 +55,14 @@ export default function SpellHolder({ name, duration, aoe, components, positive,
                 </div>
             </div>
             <div className={id === active ? "holdEffects" : "holdEffects hidden"}>
-                <div>
+                <div className={positive.length > 0 ? '' : 'hidden'}>
                     <h4>Postive:</h4>
                     {positiveEffects}
                 </div>
-                <div>
+                <div className={negative.length > 0 ? '' : 'hidden'}>
                     <h4>Negative:</h4>
                     {negativeEffects}
                 </div>
-
 
                 <div className="buttonShell">
                     <div className="holdButton">
