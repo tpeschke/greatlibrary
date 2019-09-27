@@ -67,11 +67,11 @@ export default function SpellHolder({ name, duration, aoe, components, positive,
 
                 <div className="buttonShell">
                     <div className="holdButton">
-                        <button className={type === "order" && loggedIn ? "" : "hidden"} onClick={e => openModel(e, 'single')}>Add To A List</button>
-                        <button className={type === "order" && !loggedIn ? "greyed" : "hidden"}>Add To A List</button>
+                        <button className={type === "order" && loggedIn || type === "library" && loggedIn ? "" : "hidden"} onClick={e => openModel(e, 'single')}>Add To A List</button>
+                        <button className={type === "order" && !loggedIn || type === "library" && !loggedIn ? "greyed" : "hidden"}>Add To A List</button>
                         <button className={type === "list" ? "deleteButton" : "hidden"} onClick={deleteSpell}>Remove from List</button>
                     </div>
-                    <div className={type === "list" ? "hidden" : " holdButton"}>
+                    <div className={type === "list" || type === "library" ? "hidden" : " holdButton"}>
                         <button className="modifyButton" onClick={e => openModModel(e, {name, duration, aoe, components, positive, negative, base_cost})}>Modify Spell</button>
                     </div>
                 </div>
