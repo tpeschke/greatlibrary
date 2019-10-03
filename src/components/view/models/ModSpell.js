@@ -9,6 +9,7 @@ export default class ListSelection extends Component {
 
         this.state = {
             modOpen: false,
+            // SPELL OPTIONS
             spellName: null,
             durationAmount: null,
             durationUnit: null,
@@ -42,13 +43,65 @@ export default class ListSelection extends Component {
                         { label: 'Target +3', value: '00003' },
                     ]
                 },
-            ]
+            ],
+            // MIRACLE OPTIONS
+            miracleName: null,
+            areaOfEffect: [
+                { label: 'Personal', value: '0' },
+                { label: 'Personal (center)', value: '1' },
+                { label: '2 People', value: '2' },
+                { label: 'Add. Person (x3 per person)', value: '3' },
+            ],
+            areaOfEffectBaseIncrease: 0,
+            areaOfEffectSpecial: null,
+            areaOfEffectSelect: 'Personal',
+            distance: [
+                { label: 'Person', value: '0' },
+                { label: 'Touch', value: '1' },
+                { label: 'Earshot', value: '5' },
+                { label: 'Eye Sight', value: '10' },
+                { label: 'Same Continent', value: '20' },
+                { label: 'Somewhere Else', value: '40' },
+            ],
+            distanceBaseIncrease: 0,
+            distanceSelect: 'Person',
+            delievery: [
+                { label: '1d12 + 12 Hours', value: '0' },
+                { label: '1d12 + 4', value: '1' },
+                { label: '1d4 Hours', value: '2' },
+                { label: '1d20 + 10 Minutes', value: '3' },
+                { label: '1d10 Minutes', value: '4' },
+                { label: '1d20 + 20 Seconds', value: '5' },
+                { label: '1d20 Seconds', value: '6' },
+                { label: 'Instanteous', value: '7' },
+            ],
+            delieveryBaseIncrease: 0,
+            delieverySelect: '1d12 + 12 Hours',
+            longevity: [
+                { label: '1 Second', value: '0' },
+                { label: '1d4 Seconds', value: '2' },
+                { label: '1d20 + 4 Seconds', value: '4' },
+                { label: '1d4 Minutes', value: '8' },
+                { label: '1d10 + 4 Minutes', value: '16' },
+                { label: '1d4 Hours', value: '32' },
+                { label: '1d12 + 12 Hours', value: '48' },
+            ],
+            longevityBaseIncrease: 0,
+            longevitySelect: '1 Second',
+            strength: [
+                { label: '+1', value: '0' },
+                { label: '+2', value: '1' },
+                { label: '+2 / Additional Point', value: '2' },
+            ],
+            strengthBaseIncrease: 0,
+            strengthSpecial: null,
+            strengthSelect: '+1'
         }
     }
 
     componentWillReceiveProps(next) {
         this.setState({ modOpen: next.modOpen }, _ => {
-            if (next.spell) {
+            if (next.spell && next.spell.base_cost) {
                 let duration = next.spell.duration.split(' ')
                     , cost = +next.spell.base_cost
                     , radius = next.spell.aoe.split(' ')
@@ -61,6 +114,8 @@ export default class ListSelection extends Component {
                     radiusAmount: +radius[0],
                     radiusUnit: radius[1]
                 })
+            } else if (next.spell) {
+                this.setState({ miracleName: next.spell.name })
             }
         })
     }
@@ -137,7 +192,7 @@ export default class ListSelection extends Component {
             // duration, 
             let duration = `${durationIncrease * durationAmount} ${durationUnit}`
 
-            let modifiedSpell = Object.assign({}, {degree, pos, neg, aoe, duration})
+            let modifiedSpell = Object.assign({}, { degree, pos, neg, aoe, duration })
 
             this.props.openModel(e, 'single', modifiedSpell)
             this.props.openModModel(e)
@@ -206,10 +261,24 @@ export default class ListSelection extends Component {
         }
     }
 
+    changeMiracle = (e, type) => {
+        this.setState({[`${type}BaseIncrease`] : +e.value, [`${type}Select`]: e.label}, _=> {
+            if (e.label === 'Add. Person (x3 per person)') {
+                this.setState({areaOfEffectSpecial: 1})
+            } else if (this.state.areaOfEffectSelect !== 'Add. Person (x3 per person)' && type !== 'strength') {
+                this.setState({areaOfEffectSpecial: null})
+            } else if (e.label === '+2 / Additional Point') {
+                this.setState({strengthSpecial: 2})
+            } else if (this.state.strengthSelect !== '+2 / Additional Point') {
+                this.setState({strengthSpecial: null})
+            }
+        })
+    }
+
     render() {
         let { loggedIn } = this.props
 
-        if (!this.state.spellName) {
+        if (!this.state.spellName && !this.state.miracleName) {
             return (<div className={this.state.modOpen ? "" : "hidden"}>
                 <div className="overlay" onClick={e => this.closeModal(e)}></div>
                 <div className="selectionModal modifyModal">
@@ -218,47 +287,79 @@ export default class ListSelection extends Component {
             </div>)
         }
 
-        return (
-            <div className={this.state.modOpen ? "" : "hidden"}>
-                <div className="overlay modoverlay" onClick={e => this.props.openModModel(e)}></div>
-                <div className="selectionModal modifyModal">
-                    <h1 className="selectionTitle">Modify {this.state.spellName}</h1>
-                    <div className="modTray">
-                        <h3>Step 1: Magnitude</h3>
-                        <div>
-                            <div className="flexbox">
-                                <p>Base Magnitude: </p>
-                                <input type="number" value={this.state.magnitude} onChange={e => this.changeBuyDown(+e.target.value, 'magnitude')} />
-                            </div>
-                            <div className="flexbox">
-                                <div>
-                                    <p>Positive Buy Down: </p>
-                                    <input type="number" value={this.state.posBuyDown} onChange={e => this.changeBuyDown(+e.target.value, 'posBuyDown')} />
+        if (this.state.baseCost) {
+            return (
+                <div className={this.state.modOpen ? "" : "hidden"}>
+                    <div className="overlay modoverlay" onClick={e => this.props.openModModel(e)}></div>
+                    <div className="selectionModal modifyModal">
+                        <h1 className="selectionTitle">Modify {this.state.spellName}</h1>
+                        <div className="modTray">
+                            <h3>Step 1: Magnitude</h3>
+                            <div>
+                                <div className="flexbox">
+                                    <p>Base Magnitude: </p>
+                                    <input type="number" value={this.state.magnitude} onChange={e => this.changeBuyDown(+e.target.value, 'magnitude')} />
                                 </div>
-                                <div>
-                                    <p>Negative Buy Down: </p>
-                                    <input type="number" value={this.state.negBuyDown} onChange={e => this.changeBuyDown(+e.target.value, 'negBuyDown')} />
+                                <div className="flexbox">
+                                    <div>
+                                        <p>Positive Buy Down: </p>
+                                        <input type="number" value={this.state.posBuyDown} onChange={e => this.changeBuyDown(+e.target.value, 'posBuyDown')} />
+                                    </div>
+                                    <div>
+                                        <p>Negative Buy Down: </p>
+                                        <input type="number" value={this.state.negBuyDown} onChange={e => this.changeBuyDown(+e.target.value, 'negBuyDown')} />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <h3>Step 2: Alter Area of Effect</h3>
-                        <Dropdown options={this.state.options} value={this.state.options[0]} onChange={this.changeAoE} placeholder="Select an option" />
+                            <h3>Step 2: Alter Area of Effect</h3>
+                            <Dropdown options={this.state.options} value={this.state.aoeType} onChange={this.changeAoE} placeholder="Select an option" />
 
-                        <h3>Step 3: Calculate Range</h3>
-                        Move it {this.state.radiusAmount} * <input type="number" className="rangeInput" value={this.state.rangeIncrease} onChange={e => this.changeRange(e.target.value)} /> ( {this.state.radiusAmount * this.state.rangeIncrease} ) {this.state.radiusUnit} away from caster
+                            <h3>Step 3: Calculate Range</h3>
+                            Move it {this.state.radiusAmount} * <input type="number" className="rangeInput" value={this.state.rangeIncrease} onChange={e => this.changeRange(e.target.value)} /> ( {this.state.radiusAmount * this.state.rangeIncrease} ) {this.state.radiusUnit} away from caster
 
-                        <h3>Step 4: Calculate Duration</h3>
-                        {this.state.durationAmount} * <input type="number" className="rangeInput" value={this.state.durationIncrease} onChange={e => this.changeDuration(e.target.value)} /> ( {this.state.durationAmount * (this.state.durationIncrease)} ) {this.state.durationUnit}
+                            <h3>Step 4: Calculate Duration</h3>
+                            {this.state.durationAmount} * <input type="number" className="rangeInput" value={this.state.durationIncrease} onChange={e => this.changeDuration(e.target.value)} /> ( {this.state.durationAmount * (this.state.durationIncrease)} ) {this.state.durationUnit}
 
-                        <h3 className="totalTitle">Total Spell Points: {((this.state.magnitude + this.state.posBuyDown + this.state.negBuyDown) * this.state.baseCost) + this.state.radiusIncrease + Math.ceil((this.state.rangeIncrease) * this.state.radiusRangeMultiplier * this.state.baseCost) + (this.state.baseCost * (this.state.durationIncrease - 1))}</h3>
-                        <div className="holdButton">
-                            <button className={loggedIn ? "" : "hidden"} onClick={e => this.closeModal(e)}>Add To A List</button>
-                            <button className={!loggedIn ? "greyed" : "hidden"}>Add To A List</button>
+                            <h3 className="totalTitle">Total Spell Points: {((this.state.magnitude + this.state.posBuyDown + this.state.negBuyDown) * this.state.baseCost) + this.state.radiusIncrease + Math.ceil((this.state.rangeIncrease) * this.state.radiusRangeMultiplier * this.state.baseCost) + (this.state.baseCost * (this.state.durationIncrease - 1))}</h3>
+                            <div className="holdButton">
+                                <button className={loggedIn ? "" : "hidden"} onClick={e => this.closeModal(e)}>Add To A List</button>
+                                <button className={!loggedIn ? "greyed" : "hidden"}>Add To A List</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        )
+            )
+        } else {
+            return (
+                <div className={this.state.modOpen ? "" : "hidden"}>
+                    <div className="overlay modoverlay" onClick={e => this.props.openModModel(e)}></div>
+                    <div className="selectionModal modifyModal">
+                        <h1 className="selectionTitle">Modify {this.state.miracleName}</h1>
+                        <div className="modTray">
+                            <h3>Area of Effect</h3>
+                            <Dropdown options={this.state.areaOfEffect} value={this.state.areaOfEffectSelect} onChange={e=>this.changeMiracle(e, 'areaOfEffect')} placeholder="Select an option" />
+                            {this.state.areaOfEffectSpecial ? "hello" : null}
+
+                            <h3>Distance</h3>
+                            <Dropdown options={this.state.distance} value={this.state.distanceSelect} onChange={e=>this.changeMiracle(e, 'distance')} placeholder="Select an option" />
+
+                            <h3>Delievery Time</h3>
+                            <Dropdown options={this.state.delievery} value={this.state.delieverySelect} onChange={e=>this.changeMiracle(e, 'delievery')} placeholder="Select an option" />
+
+                            <h3>Longevity</h3>
+                            <Dropdown options={this.state.longevity} value={this.state.longevitySelect} onChange={e=>this.changeMiracle(e, 'longevity')} placeholder="Select an option" />
+
+                            <h3>Strength</h3>
+                            <Dropdown options={this.state.strength} value={this.state.strengthSelect} onChange={e=>this.changeMiracle(e, 'strength')} placeholder="Select an option" />
+                            {this.state.strengthSpecial ? "hello" : null}
+
+                            <h3 className="totalTitle">Total Points: {(this.state.areaOfEffectBaseIncrease * (this.state.areaOfEffectSpecial ? this.state.areaOfEffectSpecial : 1)) + this.state.distanceBaseIncrease + this.state.delieveryBaseIncrease + this.state.longevityBaseIncrease + (this.state.strengthBaseIncrease * (this.state.strengthSpecial ? this.state.strengthSpecial : 1))}</h3>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
     }
+
 }

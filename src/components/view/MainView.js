@@ -17,7 +17,6 @@ export default class MainView extends Component {
 
     componentWillMount() {
         let { type, param, redirect } = this.props
-        console.log(type, param)
         axios.get('/by' + type + '/' + param).then(res => {
             if (res.data === 'no') {
                 redirect('/')
@@ -66,7 +65,7 @@ export default class MainView extends Component {
         }
         
         let format = this.state.spells.map(val => {
-            let { name, duration, aoe, components, positive, negative, base_cost, req, id, modmag, modaoe, modduration } = val
+            let { name, duration, aoe, components, positive, negative, base_cost, req, id, modmag, modaoe, modduration, effect, invocationdie, effects } = val
 
             return (
                 <SpellHolder key={id}
@@ -74,7 +73,8 @@ export default class MainView extends Component {
                     components={components} positive={positive} negative={negative} req={req}
                     setActive={setActive} active={active} deleteSpell={this.deleteSpell}
                     type={type} openModel={openModel} openModModel={openModModel} loggedIn={this.props.loggedIn}
-                    modmag={modmag} modaoe={modaoe} modduration={modduration} />
+                    modmag={modmag} modaoe={modaoe} modduration={modduration} effects={effects} 
+                    invocationdie={invocationdie}/>
             )
         })
         return (

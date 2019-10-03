@@ -11,7 +11,7 @@ h1 {
 h4 {
   margin-top: 7px;
   border-bottom: 1px solid black;
-  color: whitesmoke;
+  color: rgb(65, 32, 0);
   text-indent: 0;
   padding-bottom: 5px;
 }
@@ -140,7 +140,7 @@ h4 {
 .holdEffects {
   border-bottom: 3px solid rgb(65, 32, 0);
   padding: 10px 15px 15px 15px;
-  background-color: grey;
+  background-color: lightgrey;
   text-indent: 2.5em;
 }
 
