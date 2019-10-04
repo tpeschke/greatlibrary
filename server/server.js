@@ -51,16 +51,16 @@ passport.use(new Auth0Strategy({
 ////TESTING TOPLEVEL MIDDLEWARE////
 ///COMMENT OUT WHEN AUTH0 READY///
 ///////////////////////////////////
-// app.use((req, res, next) => {
-//     if (!req.user) {
-//         req.user = {
-//             id: 1,
-//             email: "mr.peschke@gmail.com",
-//             patreon: 1
-//         }
-//     }
-//     next();
-// })
+app.use((req, res, next) => {
+    if (!req.user) {
+        req.user = {
+            id: 1,
+            email: "mr.peschke@gmail.com",
+            // patreon: 1
+        }
+    }
+    next();
+})
 
 app.get('/auth', passport.authenticate('auth0'));
 app.get('/auth/callback', passport.authenticate('auth0', {
@@ -83,7 +83,7 @@ app.get('/auth/logout', function (req, res) {
 
 // ===============================
 
-app.get('/checkLogin', (req, res) => req.user ? res.send('yep') : res.send('nope'))
+app.get('/checkLogin', (req, res) => req.user ? res.send('yep') : res.status(500).send('nope'))
 app.get('/orders', ctrl.getOrders);
 app.get('/domains', ctrl.getDomains);
 app.get('/degrees', ctrl.getDegrees);

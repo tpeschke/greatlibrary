@@ -288,34 +288,50 @@ module.exports = {
     newList: (req, res) => {
         const db = req.app.get('db')
 
-        let { id, gl } = req.user
+        let { id, patreon } = req.user
 
         db.get.listCount(id).then(count => {
-            if (gl === 1 && +count[0].count === 1) {
-                res.status(200).send('too many lists')
-            } else if (gl * 2 <= +count[0].count) {
-                res.status(200).send('too many lists')
-            } else {
+            let listCount = +count[0].count
+            if (listCount === 0 || listCount >= (patreon * 2) + 1) {
                 db.add.list(id, "New List", "New Description").then(result => res.send(result))
-            }
+            } else {
+                res.status(200).send('To add more spell lists, you need to increase your Patreon Tier')
+            } 
         })
     },
     addSpell: (req, res) => {
         const db = req.app.get('db')
         let { spellid, listid, degree, pos, neg, aoe, duration } = req.body
+        let { patreon } = req.user
 
-        db.add.spell(spellid, listid, degree, aoe, duration, pos, neg).then(_ => res.send('done'))
+        db.get.spellCount(listid).then(count => {
+            let spellCount = +count[0].count
+            if (spellCount <= 5 || spellCount >= (patreon * 5) + 5) {
+                db.add.spell(spellid, listid, degree, aoe, duration, pos, neg).then(_ => res.send('done'))
+            } else {
+                res.send('To add more spells to this spell list, you need to increase your Patreon Tier')
+            } 
+        })
     },
     allSpells: (req, res) => {
         const db = req.app.get('db')
         let { type, listid } = req.body
+        let { patreon } = req.user
         let array = []
 
         db.get.idsByOrder(type.toUpperCase()).then(ids => {
-            ids.forEach(val => {
-                array.push(db.add.spell(val.id, listid).then())
+            let spellAmountToAdd = ids.length
+            db.get.spellCount(listid).then(count => {
+                let spellCount = +count[0].count
+                if (spellCount + spellAmountToAdd  <= 5 || spellCount + spellAmountToAdd >= (patreon * 5) + 5) {
+                    ids.forEach(val => {
+                        array.push(db.add.spell(val.id, listid).then())
+                    })
+                    Promise.all(array).then(_ => res.send('done'))
+                } else {
+                    res.send('To add more spells to this spell list, you need to increase your Patreon Tier')
+                } 
             })
-            Promise.all(array).then(_ => res.send('done'))
         })
     },
 

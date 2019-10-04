@@ -7,6 +7,7 @@ import Sidebar from './Sidebar'
 import MainView from './MainView'
 import ListSelection from './models/ListSelection'
 import ModSpell from './models/ModSpell'
+import WarningModal from './models/WarningModal'
 
 export default class View extends Component {
     constructor() {
@@ -27,7 +28,10 @@ export default class View extends Component {
             ham: false,
             addType: null,
             loggedIn: false,
-            modifiedSpell: {}
+            modifiedSpell: {},
+            warning: false,
+            title: 'This List Has Too Many Spells',
+            body: 'To add more spells to this spell list, you need to increase your Patreon Tier'
         }
     }
 
@@ -123,14 +127,27 @@ export default class View extends Component {
     addSpell = (e, id) => {
         let { active, addType, modifiedSpell } = this.state
         if (addType === 'all') {
-            axios.post(`/addAllSpells`, { type: active, listid: id }).then(_ => {
-                this.openModel(e)
+            axios.post(`/addAllSpells`, { type: active, listid: id }).then(res => {
+                if (res.data === 'To add more spells to this spell list, you need to increase your Patreon Tier') {
+                    this.openWarning(e)
+                } else {
+                    this.openModel(e)
+                }
             })
         } else if (addType === 'single') {
-            axios.post('/addSpell', { spellid: active, listid: id, ...modifiedSpell }).then(_ => {
-                this.openModel(e)
+            axios.post('/addSpell', { spellid: active, listid: id, ...modifiedSpell }).then(res => {
+                if (res.data === 'To add more spells to this spell list, you need to increase your Patreon Tier') {
+                    this.openWarning(e)
+                } else {
+                    this.openModel(e)
+                }
             })
         }
+    }
+
+    openWarning = (e) => {
+        e.stopPropagation()
+        this.setState({ warning: !this.state.warning })
     }
 
     updateList = (id, name, descrip) => {
@@ -148,7 +165,7 @@ export default class View extends Component {
     }
 
     render() {
-        let { param, data, name, descrip, type, lists, active, open, listid, ham, modOpen, spell, loggedIn } = this.state
+        let { param, data, name, descrip, type, lists, active, open, listid, ham, modOpen, spell, loggedIn, warning, body, title } = this.state
 
         return (
             <div className="viewShell">
@@ -192,6 +209,12 @@ export default class View extends Component {
                    openModel={this.openModel}
                    spell={spell}
                    loggedIn={loggedIn} />
+
+                <WarningModal 
+                    body={body}
+                    title={title}
+                    warning={warning}
+                    open={this.openWarning}/>
             </div>
         )
     }

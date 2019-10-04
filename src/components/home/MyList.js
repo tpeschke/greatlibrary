@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import Loading from '../Loading'
+import WarningModal from '../view/models/WarningModal'
 
 export default class MyList extends Component {
     constructor() {
@@ -8,7 +9,9 @@ export default class MyList extends Component {
 
         this.state = {
             lists: 'loading',
-            warning: false
+            warning: false,
+            title: 'Your Account Has Too Many Spell Lists',
+            body: 'To add more spell lists, you need to increase your Patreon Tier'
         }
     }
 
@@ -24,61 +27,56 @@ export default class MyList extends Component {
 
     newList = (e) => {
         axios.post('/newList').then(res => {
-            if (res.data === 'too many lists') {
-                this.openWarning(e)
-            } else {
-                this.props.redirect('/view/list+' + res.data[0].id)
-            }
-        })
-    }
-
-    openWarning = (e) => {
-        e.stopPropagation()
-        this.setState({warning: !this.state.warning})
-    }
-
-    render() {
-        let {lists, warning} = this.state
-
-        if (typeof (lists) === 'string') {
-            return (
-                <div className="listShell">
-                    <div className="listInner">
-                        <Loading />
-                    </div>
-                </div>
-            )
+        if (res.data === 'To add more spell lists, you need to increase your Patreon Tier') {
+            this.openWarning(e)
+        } else {
+            this.props.redirect('/view/list+' + res.data[0].id)
         }
+    })
+}
 
-        let listsFormat = lists.map(val => {
-            return (
-                <div key={val.id} className="listBox" onClick={_ => this.getList(val.id)}>
-                    <h4 className="listTitle">{val.name}</h4>
-                    <p className={val.description ? "listDescrip" : 'listNoDescrip'}>{val.description}</p>
-                </div>
-            )
-        })
+openWarning = (e) => {
+    e.stopPropagation()
+    this.setState({ warning: !this.state.warning })
+}
 
+render() {
+    let { lists, warning, body, title } = this.state
+
+    if (typeof (lists) === 'string') {
         return (
             <div className="listShell">
                 <div className="listInner">
-                    {listsFormat}
-                </div>
-                <div className="listButton">
-                    <button id="listButton" onClick={this.newList}>New List</button>
-                </div>
-
-                <div className={warning ? "" : "hidden"}>
-                    <div className="overlay" onClick={this.openWarning}></div>
-                    <div className="selectionModal">
-                        <h1 className="warningTitle">Your Account Has Too Many Lists</h1>
-                        <div className="warningTray">
-                                You'll need to delete one of your other lists
-                                or upgrade your Account Membership
-                        </div>
-                    </div>
+                    <Loading />
                 </div>
             </div>
         )
     }
+
+    let listsFormat = lists.map(val => {
+        return (
+            <div key={val.id} className="listBox" onClick={_ => this.getList(val.id)}>
+                <h4 className="listTitle">{val.name}</h4>
+                <p className={val.description ? "listDescrip" : 'listNoDescrip'}>{val.description}</p>
+            </div>
+        )
+    })
+
+    return (
+        <div className="listShell">
+            <div className="listInner">
+                {listsFormat}
+            </div>
+            <div className="listButton">
+                <button id="listButton" onClick={this.newList}>New List</button>
+            </div>
+
+            <WarningModal 
+                warning={warning}
+                body={body}
+                title={title}
+                open={this.openWarning}/>
+        </div>
+    )
+}
 }
