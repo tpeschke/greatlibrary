@@ -336,6 +336,7 @@ export default class ListSelection extends Component {
                 <div className={this.state.modOpen ? "" : "hidden"}>
                     <div className="overlay modoverlay" onClick={e => this.closeModalWithNoSave(e)}></div>
                     <div className="selectionModal modifyModal">
+                    <button className="modalCloseButton" onClick={e => this.closeModalWithNoSave(e)}>X</button>
                         <h1 className="selectionTitle">Modify {this.state.spellName}</h1>
                         <div className="modTray">
                             <h3>Step 1: Magnitude</h3>

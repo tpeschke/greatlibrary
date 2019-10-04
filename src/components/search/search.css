@@ -77,7 +77,7 @@ input {
 
 @media (max-width: 750px) {
     .searchShell {
-        margin: 75px 0;
+        margin: 25px 0;
     }
 
     .searchUpper {

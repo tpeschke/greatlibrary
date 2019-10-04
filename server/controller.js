@@ -132,48 +132,44 @@ module.exports = {
     getDegree: (req, res) => {
         const db = req.app.get('db')
 
-        if (!req.user) {
-            res.status(200).send('no')
-        } else {
-            let { degree } = req.params
-            db.get.spellsInDegree(`${degree}`).then(result => {
-                let finalList = result.map(val => {
-                    let finalSpell = db.get.spellPositiveEffect(val.id).then(eff => {
-                        let positive = []
-                        if (val.modposbuydown !== '0') {
-                            eff.forEach(v => {
-                                if (val.modposbuydown) {
-                                    positive.push(v.effect.replace(/[X]/ig, val.modposbuydown))
+        let { degree } = req.params
+        db.get.spellsInDegree(`${degree}`).then(result => {
+            let finalList = result.map(val => {
+                let finalSpell = db.get.spellPositiveEffect(val.id).then(eff => {
+                    let positive = []
+                    if (val.modposbuydown !== '0') {
+                        eff.forEach(v => {
+                            if (val.modposbuydown) {
+                                positive.push(v.effect.replace(/[X]/ig, val.modposbuydown))
+                            } else {
+                                positive.push(v.effect)
+                            }
+                        })
+                    }
+                    return Object.assign(val, { positive })
+                })
+                return finalSpell
+            })
+            Promise.all(finalList).then(finalArray => {
+                let spellArrayWithNegative = finalArray.map(val => {
+                    let spellWithNegative = db.get.spellNegativeEffect(val.id).then(negEff => {
+                        let negative = []
+                        if (val.modnegbuydown !== '0') {
+                            negEff.forEach(nv => {
+                                if (val.modnegbuydown) {
+                                    negative.push(nv.effect.replace(/[X]/ig, val.modnegbuydown))
                                 } else {
-                                    positive.push(v.effect)
+                                    negative.push(nv.effect)
                                 }
                             })
                         }
-                        return Object.assign(val, { positive })
+                        return Object.assign(val, { negative })
                     })
-                    return finalSpell
+                    return spellWithNegative
                 })
-                Promise.all(finalList).then(finalArray => {
-                    let spellArrayWithNegative = finalArray.map(val => {
-                        let spellWithNegative = db.get.spellNegativeEffect(val.id).then(negEff => {
-                            let negative = []
-                            if (val.modnegbuydown !== '0') {
-                                negEff.forEach(nv => {
-                                    if (val.modnegbuydown) {
-                                        negative.push(nv.effect.replace(/[X]/ig, val.modnegbuydown))
-                                    } else {
-                                        negative.push(nv.effect)
-                                    }
-                                })
-                            }
-                            return Object.assign(val, { negative })
-                        })
-                        return spellWithNegative
-                    })
-                    Promise.all(spellArrayWithNegative).then(finalSpellArray => res.send(finalSpellArray))
-                })
+                Promise.all(spellArrayWithNegative).then(finalSpellArray => res.send(finalSpellArray))
             })
-        }
+        })
     },
     allLists: (req, res) => {
         const db = req.app.get('db')
