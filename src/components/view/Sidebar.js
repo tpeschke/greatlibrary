@@ -1,8 +1,8 @@
 import React from 'react'
 import Loading from '../Loading'
 
-export default function Sidebar({ type, data, changeView, param, mobile, ham, openHam }) {
-    if (typeof (data) === 'string' && !mobile) {
+export default function Sidebar({ type, data, changeView, param, ham, openHam, match, history }) {
+    if (typeof (data) === 'string') {
         return (
             <div className="sidebarShell">
                 <div className="sidebarLoader">
@@ -31,8 +31,12 @@ export default function Sidebar({ type, data, changeView, param, mobile, ham, op
         )
     })
 
-    if (mobile) {
-        return (
+    return (
+        <div className="sidebarShell">
+            <div className="sidebarShellInner">
+                {format}
+            </div>
+
             <div className="hamShell">
                 <div className={ham ? "hamOverlay" : 'hidden'}>
                     <p className="exit" onClick={openHam}>X</p>
@@ -40,18 +44,19 @@ export default function Sidebar({ type, data, changeView, param, mobile, ham, op
                         {format}
                     </div>
                 </div>
-                <div className="outerHam" onClick={openHam}>
-                    <div className="innerHam"></div>
-                    <div className="innerHam"></div>
-                    <div className="innerHam"></div>
+                <div className="hamIconShell">
+                    <div className="outerHam" onClick={openHam}>
+                        <div className="innerHam"></div>
+                        <div className="innerHam"></div>
+                        <div className="innerHam"></div>
+                    </div>
+                    <div className="navIcons">
+                        <i className={match.path === '/' ? "hidden" : "fa fa-home search"} onClick={_ => history.push('/')}></i>
+                        <i className={match.url === '/view/library+1' ? "hidden" : "fa fa-book bookIcon"} onClick={_ => history.push('/view/library+1')}></i>
+                        <i className={match.path === '/search' ? "hidden" : match.path === '/' ? 'fa fa-search search' : "fa fa-search home"} onClick={_ => history.push('/search')}></i>
+                    </div>
                 </div>
             </div>
-        )
-    } else {
-        return (
-            <div className="sidebarShell">
-                {format}
-            </div>
-        )
-    }
+        </div>
+    )
 }

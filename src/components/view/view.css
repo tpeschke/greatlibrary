@@ -35,7 +35,7 @@ h4 {
 
 .viewShell {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 
 .viewBox {
@@ -50,9 +50,10 @@ h4 {
   height: 100%;
 }
 
-.sidebarShell {
+.sidebarShellInner {
   background: rgba(255, 255, 255, 0.753);
 }
+
 
 .sidebarSelection {
   padding: 5px 10px;
@@ -315,12 +316,15 @@ h4 {
 }
 /* ========================== */
 
+.hamShell {
+  display: none;
+}
+
 .outerHam {
-  position: absolute;
+  position: relative;
   height: 25px;
   width: 30px;
-  top: -50px;
-  left: 25px;
+  margin-left: 25px;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
@@ -353,38 +357,62 @@ h4 {
   align-items: center;
 }
 
+.hamIconShell {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 /* =========================== */
 
-@media (max-width: 800px) {
-  .viewBoxSidebar {
-    width: 21.5%;
-    padding: 15px 0;
+@media(max-width: 900px) {
+  .viewBox {
+    margin-left: 0px;
+    margin-right: 0px;
   }
+}
 
+@media (max-width: 800px) {
   .viewBoxMain {
     padding-right: 0;
   }
 
   .viewBox {
     min-width: 0;
-    margin: 25px 0;
+    margin: 0;
   }
+
+  .viewBoxSidebar {
+    width: 100%;
+    padding: 0;
+    margin-bottom: 10px;
+  }
+
 
   .modifyModal {
     width: 80%;
     left: 10%;
   }
-}
 
-@media (max-width: 500px) {
   .viewBoxSidebar {
-    height: 0;
-    width: 0;
-    position: absolute;
+    background: none;
+  }
+
+  .viewShell {
+    flex-direction: column;
   }
 
   .viewBoxMain {
     padding: 15px 5px;
+    width: 100%;
+  }
+
+  .sidebarShellInner {
+    display: none;
+    background: rgba(255, 255, 255, 0.753);
+  }
+
+  .hamShell {
+    display: inline-block;
     width: 100%;
   }
 

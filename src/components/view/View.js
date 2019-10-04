@@ -24,7 +24,6 @@ export default class View extends Component {
             open: false,
             modOpen: false,
             spell: null,
-            mobile: false,
             ham: false,
             addType: null,
             loggedIn: false,
@@ -34,7 +33,7 @@ export default class View extends Component {
 
     componentWillMount() {
         let params = this.props.match.params.type.split('+');
-        this.setState({ type: params[0], param: params[1], mobile: document.documentElement.clientWidth <= 500 ? true : false })
+        this.setState({ type: params[0], param: params[1]})
 
         if (!this.state.loggedIn) {
             axios.get('/checkLogin').then(res => {
@@ -149,7 +148,7 @@ export default class View extends Component {
     }
 
     render() {
-        let { param, data, name, descrip, type, lists, active, open, listid, mobile, ham, modOpen, spell, loggedIn } = this.state
+        let { param, data, name, descrip, type, lists, active, open, listid, ham, modOpen, spell, loggedIn } = this.state
 
         return (
             <div className="viewShell">
@@ -159,9 +158,10 @@ export default class View extends Component {
                         data={data}
                         changeView={this.changeView}
                         param={param}
-                        mobile={mobile}
                         ham={ham}
-                        openHam={this.openHam} />
+                        openHam={this.openHam}
+                        match={this.props.match}
+                        history={this.props.history} />
                 </div>
                 <div className="viewBox viewBoxMain">
                     <MainView

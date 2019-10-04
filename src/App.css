@@ -95,7 +95,7 @@ h2 {
 .bookIcon {
   color: whitesmoke;
   margin-right: 25px;
-  font-size: 32px;
+  font-size: 34px;
 }
 
 .bookIcon:hover {
@@ -252,5 +252,9 @@ h2 {
 @media (max-width: 800px) {
   .image {
     background-size: 100%;
+  }
+
+  .HOC {
+    display: none;
   }
 }

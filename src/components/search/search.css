@@ -75,7 +75,7 @@ input {
     }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 750px) {
     .searchShell {
         margin: 75px 0;
     }

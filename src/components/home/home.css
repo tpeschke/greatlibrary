@@ -139,7 +139,7 @@ button:hover {
 
 /* MEDIA QUERIES */
 
-@media (max-width: 500px) {
+@media (max-width: 750px) {
     .outerShell {
         display: flex;
         flex-direction: column;
