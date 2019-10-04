@@ -219,35 +219,35 @@ export default class ListSelection extends Component {
 
     closeModalWithNoSave = (e) => {
         this.props.openModModel(e)
-            this.setState({
-                spellName: null,
-                durationAmount: null,
-                durationUnit: null,
-                baseCost: null,
-                radiusAmount: null,
-                radiusUnit: null,
-                durationIncrease: 1,
-                radiusIncrease: 0,
-                rangeIncrease: 0,
-                radiusRangeMultiplier: 2,
-                magnitude: 1,
-                posBuyDown: 0,
-                negBuyDown: 0,
-                aoeType: "Full +0",
-                miracleName: null,
-                areaOfEffectBaseIncrease: 0,
-                areaOfEffectSpecial: null,
-                areaOfEffectSelect: 'Personal',
-                distanceBaseIncrease: 0,
-                distanceSelect: 'Person',
-                delieveryBaseIncrease: 0,
-                delieverySelect: '1d12 + 12 Hours',
-                longevityBaseIncrease: 0,
-                longevitySelect: '1 Second',
-                strengthBaseIncrease: 0,
-                strengthSpecial: null,
-                strengthSelect: '+1'
-            })
+        this.setState({
+            spellName: null,
+            durationAmount: null,
+            durationUnit: null,
+            baseCost: null,
+            radiusAmount: null,
+            radiusUnit: null,
+            durationIncrease: 1,
+            radiusIncrease: 0,
+            rangeIncrease: 0,
+            radiusRangeMultiplier: 2,
+            magnitude: 1,
+            posBuyDown: 0,
+            negBuyDown: 0,
+            aoeType: "Full +0",
+            miracleName: null,
+            areaOfEffectBaseIncrease: 0,
+            areaOfEffectSpecial: null,
+            areaOfEffectSelect: 'Personal',
+            distanceBaseIncrease: 0,
+            distanceSelect: 'Person',
+            delieveryBaseIncrease: 0,
+            delieverySelect: '1d12 + 12 Hours',
+            longevityBaseIncrease: 0,
+            longevitySelect: '1 Second',
+            strengthBaseIncrease: 0,
+            strengthSpecial: null,
+            strengthSelect: '+1'
+        })
     }
 
     changeBuyDown = (value, type) => {
@@ -294,28 +294,28 @@ export default class ListSelection extends Component {
     }
 
     changeMiracle = (e, type) => {
-        this.setState({[`${type}BaseIncrease`] : +e.value, [`${type}Select`]: e.label}, _=> {
+        this.setState({ [`${type}BaseIncrease`]: +e.value, [`${type}Select`]: e.label }, _ => {
             if (e.label === 'Add. Person (x3 per person)') {
-                this.setState({areaOfEffectSpecial: 2})
+                this.setState({ areaOfEffectSpecial: 2 })
             } else if (this.state.areaOfEffectSelect !== 'Add. Person (x3 per person)' && type !== 'strength') {
-                this.setState({areaOfEffectSpecial: null})
+                this.setState({ areaOfEffectSpecial: null })
             } else if (e.label === '+2 / Additional Point') {
-                this.setState({strengthSpecial: 2})
+                this.setState({ strengthSpecial: 2 })
             } else if (this.state.strengthSelect !== '+2 / Additional Point') {
-                this.setState({strengthSpecial: null})
+                this.setState({ strengthSpecial: null })
             }
         })
     }
 
     changeStrengthSpecial = (e) => {
         if (+e.target.value >= 2) {
-            this.setState({strengthSpecial: e.target.value})
+            this.setState({ strengthSpecial: e.target.value })
         }
     }
 
     changeAreaOfEffectSpecial = (e) => {
         if (+e.target.value >= 3) {
-            this.setState({areaOfEffectSpecial: e.target.value})
+            this.setState({ areaOfEffectSpecial: e.target.value })
         }
     }
 
@@ -336,7 +336,7 @@ export default class ListSelection extends Component {
                 <div className={this.state.modOpen ? "" : "hidden"}>
                     <div className="overlay modoverlay" onClick={e => this.closeModalWithNoSave(e)}></div>
                     <div className="selectionModal modifyModal">
-                    <button className="modalCloseButton" onClick={e => this.closeModalWithNoSave(e)}>X</button>
+                        <button className="modalCloseButton" onClick={e => this.closeModalWithNoSave(e)}>X</button>
                         <h1 className="selectionTitle">Modify {this.state.spellName}</h1>
                         <div className="modTray">
                             <h3>Step 1: Magnitude</h3>
@@ -380,26 +380,27 @@ export default class ListSelection extends Component {
                 <div className={this.state.modOpen ? "" : "hidden"}>
                     <div className="overlay modoverlay" onClick={e => this.closeModalWithNoSave(e)}></div>
                     <div className="selectionModal modifyModal">
+                        <button className="modalCloseButton" onClick={e => this.closeModalWithNoSave(e)}>X</button>
                         <h1 className="selectionTitle">Modify {this.state.miracleName}</h1>
                         <div className="modTray">
                             <h3>Area of Effect</h3>
-                            <Dropdown options={this.state.areaOfEffect} value={this.state.areaOfEffectSelect} onChange={e=>this.changeMiracle(e, 'areaOfEffect')} placeholder="Select an option" />
-                            {this.state.areaOfEffectSpecial ? <input type="number" value={this.state.areaOfEffectSpecial} onChange={e=>this.changeAreaOfEffectSpecial(e)}/> : null}
+                            <Dropdown options={this.state.areaOfEffect} value={this.state.areaOfEffectSelect} onChange={e => this.changeMiracle(e, 'areaOfEffect')} placeholder="Select an option" />
+                            {this.state.areaOfEffectSpecial ? <input type="number" value={this.state.areaOfEffectSpecial} onChange={e => this.changeAreaOfEffectSpecial(e)} /> : null}
 
                             <h3>Distance</h3>
-                            <Dropdown options={this.state.distance} value={this.state.distanceSelect} onChange={e=>this.changeMiracle(e, 'distance')} placeholder="Select an option" />
+                            <Dropdown options={this.state.distance} value={this.state.distanceSelect} onChange={e => this.changeMiracle(e, 'distance')} placeholder="Select an option" />
 
                             <h3>Delievery Time</h3>
-                            <Dropdown options={this.state.delievery} value={this.state.delieverySelect} onChange={e=>this.changeMiracle(e, 'delievery')} placeholder="Select an option" />
+                            <Dropdown options={this.state.delievery} value={this.state.delieverySelect} onChange={e => this.changeMiracle(e, 'delievery')} placeholder="Select an option" />
 
                             <h3>Longevity</h3>
-                            <Dropdown options={this.state.longevity} value={this.state.longevitySelect} onChange={e=>this.changeMiracle(e, 'longevity')} placeholder="Select an option" />
+                            <Dropdown options={this.state.longevity} value={this.state.longevitySelect} onChange={e => this.changeMiracle(e, 'longevity')} placeholder="Select an option" />
 
                             <h3>Strength</h3>
-                            <Dropdown options={this.state.strength} value={this.state.strengthSelect} onChange={e=>this.changeMiracle(e, 'strength')} placeholder="Select an option" />
-                            {this.state.strengthSpecial ? <input type="number" value={this.state.strengthSpecial} onChange={e=>this.changeStrengthSpecial(e)}/> : null}
+                            <Dropdown options={this.state.strength} value={this.state.strengthSelect} onChange={e => this.changeMiracle(e, 'strength')} placeholder="Select an option" />
+                            {this.state.strengthSpecial ? <input type="number" value={this.state.strengthSpecial} onChange={e => this.changeStrengthSpecial(e)} /> : null}
 
-                            <h3 className="totalTitle">Total Points: {(this.state.areaOfEffectBaseIncrease * (this.state.areaOfEffectSpecial ? (this.state.areaOfEffectSpecial * 3 - 1): 1)) + this.state.distanceBaseIncrease + this.state.delieveryBaseIncrease + this.state.longevityBaseIncrease + (this.state.strengthBaseIncrease * (this.state.strengthSpecial ? this.state.strengthSpecial : 1))}</h3>
+                            <h3 className="totalTitle">Total Points: {(this.state.areaOfEffectBaseIncrease * (this.state.areaOfEffectSpecial ? (this.state.areaOfEffectSpecial * 3 - 1) : 1)) + this.state.distanceBaseIncrease + this.state.delieveryBaseIncrease + this.state.longevityBaseIncrease + (this.state.strengthBaseIncrease * (this.state.strengthSpecial ? this.state.strengthSpecial : 1))}</h3>
                         </div>
                     </div>
                 </div>
