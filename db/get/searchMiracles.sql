@@ -1,4 +1,4 @@
-select distinct glMiracles.id, name, req from glMiracles
+select distinct glMiracles.id, name, invocationdie from glMiracles
 join glMiracleeffects on glMiracleeffects.Miracleid = glMiracles.id
 where 
     name like UPPER('%'|| $1 ||'%')
