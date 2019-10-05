@@ -301,7 +301,7 @@ module.exports = {
 
         db.get.listCount(id).then(count => {
             let listCount = +count[0].count
-            if (listCount === 0 || listCount >= (patreon * 2) + 1) {
+            if (listCount === 0 || listCount >= patreon + 1) {
                 db.add.list(id, "New List", "New Description").then(result => res.send(result))
             } else {
                 res.status(200).send('To add more spell lists, you need to increase your Patreon Tier')
@@ -315,7 +315,7 @@ module.exports = {
 
         db.get.spellCount(listid).then(count => {
             let spellCount = +count[0].count
-            if (spellCount <= 5 || spellCount >= (patreon * 5) + 5) {
+            if (spellCount <= 5 || spellCount >= (patreon * 3) + 5) {
                 db.add.spell(spellid, listid, degree, aoe, duration, pos, neg).then(_ => res.send('done'))
             } else {
                 res.send('To add more spells to this spell list, you need to increase your Patreon Tier')
