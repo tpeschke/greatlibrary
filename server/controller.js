@@ -189,21 +189,24 @@ module.exports = {
         } else {
             let { id } = req.params
             db.get.spellsInList(id).then(result => {
-                let finalList = result.map(val => {
+                let finalList = list.map(val => {
                     let finalSpell = db.get.spellPositiveEffect(val.id).then(eff => {
                         let positive = []
-                        if (val.modposbuydown !== '0') {
-                            eff.forEach(v => {
-                                if (val.modposbuydown) {
-                                    positive.push(v.effect.replace(/[X]/ig, val.modposbuydown))
-                                } else {
-                                    positive.push(v.effect)
-                                }
-                            })
-                        }
+                        eff.forEach(v => positive.push(v.effect))
                         return Object.assign(val, { positive })
                     })
                     return finalSpell
+                })
+                Promise.all(finalList).then(finalArray => {
+                    let spellArrayWithNegative = finalArray.map(val => {
+                        let spellWithNegative = db.get.spellNegativeEffect(val.id).then(negEff => {
+                            let negative = []
+                            negEff.forEach(nv => negative.push(nv.effect))
+                            return Object.assign(val, { negative })
+                        })
+                        return spellWithNegative
+                    })
+                    Promise.all(spellArrayWithNegative).then(finalSpellArray => res.send(finalSpellArray))
                 })
                 Promise.all(finalList).then(finalArray => {
                     let spellArrayWithNegative = finalArray.map(val => {
@@ -257,16 +260,22 @@ module.exports = {
                 let finalList = list.map(val => {
                     let finalSpell = db.get.spellPositiveEffect(val.id).then(eff => {
                         let positive = []
-                        let negative = []
                         eff.forEach(v => positive.push(v.effect))
-                        db.get.spellNegativeEffect(val.id).then(negEff => {
-                            negEff.forEach(nv => negative.push(nv.effect))
-                        })
-                        return Object.assign(val, { positive, negative })
+                        return Object.assign(val, { positive })
                     })
                     return finalSpell
                 })
-                Promise.all(finalList).then(finalArray => res.send(finalArray))
+                Promise.all(finalList).then(finalArray => {
+                    let spellArrayWithNegative = finalArray.map(val => {
+                        let spellWithNegative = db.get.spellNegativeEffect(val.id).then(negEff => {
+                            let negative = []
+                            negEff.forEach(nv => negative.push(nv.effect))
+                            return Object.assign(val, { negative })
+                        })
+                        return spellWithNegative
+                    })
+                    Promise.all(spellArrayWithNegative).then(finalSpellArray => res.send(finalSpellArray))
+                })
             })
         } else {
             db.get.searchMiracles(search).then(list => {
@@ -296,7 +305,7 @@ module.exports = {
                 db.add.list(id, "New List", "New Description").then(result => res.send(result))
             } else {
                 res.status(200).send('To add more spell lists, you need to increase your Patreon Tier')
-            } 
+            }
         })
     },
     addSpell: (req, res) => {
@@ -310,7 +319,7 @@ module.exports = {
                 db.add.spell(spellid, listid, degree, aoe, duration, pos, neg).then(_ => res.send('done'))
             } else {
                 res.send('To add more spells to this spell list, you need to increase your Patreon Tier')
-            } 
+            }
         })
     },
     allSpells: (req, res) => {
@@ -323,14 +332,14 @@ module.exports = {
             let spellAmountToAdd = ids.length
             db.get.spellCount(listid).then(count => {
                 let spellCount = +count[0].count
-                if (spellCount + spellAmountToAdd  <= 5 || spellCount + spellAmountToAdd >= (patreon * 5) + 5) {
+                if (spellCount + spellAmountToAdd <= 5 || spellCount + spellAmountToAdd >= (patreon * 5) + 5) {
                     ids.forEach(val => {
                         array.push(db.add.spell(val.id, listid).then())
                     })
                     Promise.all(array).then(_ => res.send('done'))
                 } else {
                     res.send('To add more spells to this spell list, you need to increase your Patreon Tier')
-                } 
+                }
             })
         })
     },

@@ -4,6 +4,7 @@ import SpellHolder from '../view/SpellHolder'
 import ListSelection from '../view/models/ListSelection'
 import Loading from '../Loading'
 import axios from 'axios'
+import ModSpell from '../view/models/ModSpell'
 
 export default class Search extends Component {
     constructor() {
@@ -17,7 +18,9 @@ export default class Search extends Component {
             loggedIn: false,
             open: false,
             modOpen: false,
-            lists: []
+            lists: [],
+            spell: null,
+            modifiedSpell: null
         }
     }
 
@@ -28,14 +31,14 @@ export default class Search extends Component {
             }
         })
         axios.get('/getAllLists').then(res => {
-            this.setState({lists: res.data})
+            this.setState({ lists: res.data })
         })
     }
 
     sendSearch = (search) => {
         let { type } = this.state
         this.setState({ results: 'loading' }, _ => {
-            axios.get(`/search?type=${type}&search=${search}`).then(res => {
+            axios.get(`/api/search?type=${type}&search=${search}`).then(res => {
                 this.setState({ results: res.data })
             })
         })
@@ -56,34 +59,40 @@ export default class Search extends Component {
         }
     }
 
-    openModel = (e) => {
+    openModel = (e, type, modSpell) => {
         e.stopPropagation()
-        this.setState({open: !this.state.open})
+        if (modSpell) {
+            this.setState({ open: !this.state.open, type, modifiedSpell: modSpell })
+        } else {
+            this.setState({ open: !this.state.open, type })
+        }
     }
 
-    openModModel = (e) => {
+    openModModel = (e, spell) => {
         e.stopPropagation()
-        this.setState({modOpen: !this.state.modOpen})
+        this.setState({ modOpen: !this.state.modOpen, spell })
     }
 
     addSpell = (e, id) => {
-        let {active} = this.state
-            axios.post('/addSpell', {spellid: active, listid: id}).then( _ => {
-                this.openModel(e)
-            })
+        let { active } = this.state
+        axios.post('/addSpell', { spellid: active, listid: id }).then(_ => {
+            this.openModel(e)
+        })
     }
 
     render() {
-        let { results, selected, active, type, lists, open, loggedIn, modOpen } = this.state
+        let { results, selected, active, type, lists, open, loggedIn, modOpen, spell } = this.state
 
         let format = Array.isArray(results) ? results.map(val => {
-            let { name, duration, aoe, components, effects, req, id } = val
+            let { name, duration, aoe, components, effects, req, id, invocationdie, positive, negative, base_cost } = val
             return (
                 <SpellHolder key={id}
                     name={name} id={id} duration={duration} aoe={aoe}
                     components={components} effects={effects} req={req}
                     setActive={this.setActive} active={active}
-                    type={type} openModel={this.openModel} loggedIn={loggedIn} 
+                    type={type} openModel={this.openModel} loggedIn={loggedIn}
+                    invocationdie={invocationdie} positive={positive} negative={negative}
+                    base_cost={base_cost} openModModel={this.openModModel}
                 />
             )
         }) : null;
@@ -118,22 +127,18 @@ export default class Search extends Component {
                     {show}
                 </div>
 
-                <ListSelection 
+                <ListSelection
                     lists={lists}
                     open={open}
                     openModel={this.openModel}
-                    addSpell={this.addSpell}/>
+                    addSpell={this.addSpell} />
 
-                
-                <div className={modOpen ? "" : "hidden"}>
-                    <div className="overlay" onClick={this.openModModel}></div>
-                    <div className="selectionModal">
-                        <h1 className="warningTitle">Modify</h1>
-                        <div className="warningTray">
-                                Hello!
-                        </div>
-                    </div>
-                </div>
+                <ModSpell
+                    modOpen={modOpen}
+                    openModModel={this.openModModel}
+                    openModel={this.openModel}
+                    spell={spell}
+                    loggedIn={loggedIn} />
             </div>
         )
     }

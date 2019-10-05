@@ -56,7 +56,7 @@ passport.use(new Auth0Strategy({
 //         req.user = {
 //             id: 1,
 //             email: "mr.peschke@gmail.com",
-//             // patreon: 1
+//             patreon: 1
 //         }
 //     }
 //     next();
@@ -94,7 +94,7 @@ app.get('/byLibrary/:degree', ctrl.getDegree);
 app.get('/byList/:id', ctrl.getList);
 app.get('/getAllLists', ctrl.allLists);
 app.get('/getSingleList/:id', ctrl.getSingleList);
-app.get('/search', ctrl.search);
+app.get('/api/search', ctrl.search);
 
 app.post('/newList', ctrl.newList);
 app.post('/addSpell', ctrl.addSpell);

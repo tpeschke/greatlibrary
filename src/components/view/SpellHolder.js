@@ -6,7 +6,7 @@ export default function SpellHolder({ name, duration, aoe, components, positive,
     let positiveEffects = <div></div>
     let negativeEffects = <div></div>
     let miracleEffect = <div></div>
-
+    
     if (positive) {
         positiveEffects = positive.map((val, i) => {
             return (
@@ -22,7 +22,7 @@ export default function SpellHolder({ name, duration, aoe, components, positive,
                 </div>
             )
         })
-    } else {
+    } else if (invocationdie) {
         miracleEffect = effects.map((val, i) => {
             return (
                 <div className="holdIndividual" key={i}>
