@@ -36,7 +36,6 @@ passport.use(new Auth0Strategy({
         if (!users[0]) {
             db.add.create_User([
                 displayName,
-                picture,
                 user_id
             ]).then(users => {
                 return done(null, users[0].id)
